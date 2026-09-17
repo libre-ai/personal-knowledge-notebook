@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { expect, test } from "@playwright/test";
+import { inspectRuntimeCapabilities } from "./runtime-diagnostics";
 
 const PUBLIC_PLAINTEXT =
   '{"blocks":[],"schemaVersion":"libre-ai.notebook-product-host-fixture.v1"}';
@@ -81,6 +82,7 @@ test("seals, downloads, stages and restores through the exact product host", asy
   expect(contentSecurityPolicy).not.toContain("'unsafe-eval'");
   await expect(page.getByRole("heading", { name: "Fixture publique Gate B" })).toBeVisible();
 
+  await assertRuntimeReady(page);
   const downloadPromise = page.waitForEvent("download");
   await page.getByRole("button", { name: "Créer une sauvegarde d’essai" }).click();
   const download = await downloadPromise;
@@ -148,7 +150,7 @@ test("removes encrypted restore staging left by an interrupted process", async (
   page,
 }) => {
   await page.goto("/");
-  await expect(page.getByTestId("backup-status")).toContainText("host est prêt");
+  await assertRuntimeReady(page);
   await page.evaluate(async () => {
     await new Promise<void>((resolve, reject) => {
       const open = indexedDB.open("libre-ai-notebook", 1);
@@ -208,3 +210,25 @@ async function inspectBackupStore(page: import("@playwright/test").Page): Promis
     };
   });
 }
+
+async function assertRuntimeReady(page: import("@playwright/test").Page): Promise<void> {
+  try {
+    await expect(page.getByTestId("backup-status")).toContainText("host est prêt");
+  } catch {
+    const capabilities = await inspectRuntimeCapabilities(page);
+    throw new Error(`Notebook startup unavailable: ${JSON.stringify(capabilities)}`);
+  }
+}
+
+test("reports capability stages without retaining exception details", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "storage", {
+      configurable: true,
+      value: { estimate: async () => { throw new TypeError("private-diagnostic-sentinel"); } },
+    });
+  });
+  const capabilities = await inspectRuntimeCapabilities(page);
+  expect(capabilities.quota).toBe("type-error");
+  expect(JSON.stringify(capabilities)).not.toContain("private-diagnostic-sentinel");
+});
