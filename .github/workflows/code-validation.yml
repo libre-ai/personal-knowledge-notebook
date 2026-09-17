@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2026 Libre AI contributors
+# SPDX-License-Identifier: EUPL-1.2
+name: Code validation
+'on':
+  push:
+    branches: [main, migrate/recover-code]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  composition:
+    uses: libre-ai/project-governance/.github/workflows/validate-composition.yml@b9ff8f3b59bd5dda0f4d6b1480702bb99df3d5eb
+    with:
+      target: personal-knowledge-notebook
+      target_ref: ${{ github.sha }}
+      tooling_ref: b9ff8f3b59bd5dda0f4d6b1480702bb99df3d5eb
