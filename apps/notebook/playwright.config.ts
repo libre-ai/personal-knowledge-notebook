@@ -15,8 +15,11 @@ export default defineConfig({
       use: { ...devices["Desktop Firefox"] },
     },
     {
-      name: "webkit",
-      testMatch: /backup-host\.e2e\.ts/,
+      // Linux's bundled WebKit lacks StorageManager.estimate; verify its closed refusal.
+      // macOS keeps every positive backup/restore assertion against the capable WebKit port.
+      name: process.platform === "linux" ? "webkit-linux-refusal" : "webkit",
+      testMatch:
+        process.platform === "linux" ? /linux-storage-refusal\.e2e\.ts/ : /backup-host\.e2e\.ts/,
       use: { ...devices["Desktop Safari"] },
     },
     {

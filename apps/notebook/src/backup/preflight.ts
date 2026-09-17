@@ -5,6 +5,9 @@ export const NOTEBOOK_STORAGE_QUOTA_FLOOR_BYTES = 536_870_912;
 
 export async function verifyNotebookBackupRuntime(): Promise<void> {
   try {
+    if (typeof navigator.storage?.estimate !== "function") {
+      throw new NotebookBackupRefusal("resource-limit-exceeded");
+    }
     const source = new Uint8Array([0x5a]);
     const transferred = structuredClone(source, { transfer: [source.buffer] });
     const estimate = await navigator.storage.estimate();

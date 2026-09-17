@@ -28,3 +28,9 @@ Rust1.97.0 et wasm32-unknown-unknown sont utilisés par les moteurs. Vérificati
 Le build courant sans sauvegarde utilise `bun run --cwd apps/notebook build`. La sauvegarde exige `NOTEBOOK_QUALIFICATION_NODE` pointant sur Node26.5.0 correspondant exactement au SHA du manifeste `toolchains/notebook-qualification.json`, puis `bun run --cwd apps/notebook build:gate-b`. La fonctionnalité chiffrée ne doit pas être annoncée à partir du seul build sans sauvegarde.
 
 Le test courant est `NOTEBOOK_QUALIFICATION_NODE=/chemin/vers/node bun run --cwd apps/notebook test:e2e --workers=1`. Le chemin est fourni par l’utilisateur ; il doit correspondre au binaire épinglé. Voir [les limites de la preuve du build](notebook-build-migration.md).
+
+## Navigateurs et sauvegardes
+
+La sauvegarde exige l’API native d’estimation du stockage, avec au moins 512 Mio disponibles. Si cette capacité manque, l’application désactive la création et la restauration avant de créer un worker ; aucun quota de remplacement n’est inventé.
+
+La CI Linux vérifie les parcours complets sous Chromium et Firefox, ainsi que le refus explicite du WebKit Linux testé, qui ne fournit pas cette API. Une CI macOS distincte vérifie les parcours complets WebKit. Les deux workflows doivent réussir sur le même commit ; un refus Linux réussi ne prouve pas le fonctionnement de la sauvegarde sur ce navigateur.

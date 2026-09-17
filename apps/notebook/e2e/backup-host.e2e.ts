@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { expect, test } from "@playwright/test";
 import { inspectRuntimeCapabilities } from "./runtime-diagnostics";
+import { assertUnavailableRuntime } from "./runtime-refusal";
 
 const PUBLIC_PLAINTEXT =
   '{"blocks":[],"schemaVersion":"libre-ai.notebook-product-host-fixture.v1"}';
@@ -231,4 +232,11 @@ test("reports capability stages without retaining exception details", async ({ p
   const capabilities = await inspectRuntimeCapabilities(page);
   expect(capabilities.quota).toBe("type-error");
   expect(JSON.stringify(capabilities)).not.toContain("private-diagnostic-sentinel");
+});
+
+test("refuses a missing quota API without creating a backup worker", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "storage", { configurable: true, value: {} });
+  });
+  await assertUnavailableRuntime(page);
 });

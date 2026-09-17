@@ -1,0 +1,102 @@
+# SPDX-License-Identifier: EUPL-1.2
+name: Notebook WebKit macOS
+
+'on':
+  push:
+    branches: [main, migrate/recover-code]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  webkit-macos:
+    # GitHub's macos-15 image is ARM64; verify the actual host before downloads.
+    # https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+    runs-on: macos-15
+    timeout-minutes: 90
+    env:
+      INPUT_TARGET_REF: ${{ github.sha }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Verify macOS ARM64 runner
+        shell: bash
+        run: |
+          test "$(uname -s)" = Darwin
+          test "$(uname -m)" = arm64
+          python3 - <<'PY'
+          import os
+          import re
+          if re.fullmatch('[0-9a-f]{40}', os.environ['INPUT_TARGET_REF']) is None:
+              raise SystemExit('Exact target revision required')
+          PY
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: source
+          persist-credentials: false
+      - name: Checkout immutable composition tooling
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: libre-ai/project-governance
+          ref: ed87f3fa5b9285adc08e7a07a94853872cb1bb16
+          path: tooling
+          persist-credentials: false
+      - name: Test macOS installer boundaries
+        run: python3 -B -m unittest discover -s source/.github/scripts -p 'test_install_macos_toolchains.py'
+      - name: Prepare pinned source composition
+        run: |
+          python3 -B tooling/.github/composition/run-composition.py \
+            --target personal-knowledge-notebook --revision "$INPUT_TARGET_REF" \
+            --root "$GITHUB_WORKSPACE/composition" --phase prepare
+      - name: Install verified macOS toolchains
+        run: |
+          bash source/.github/scripts/install-macos-toolchains.sh \
+            "$GITHUB_WORKSPACE/tooling/toolchains/bun.json" \
+            "$GITHUB_WORKSPACE/tooling/toolchains/notebook-qualification.json"
+      - name: Install Rust compiler and WASM target
+        uses: dtolnay/rust-toolchain@4be7066ada62dd38de10e7b70166bc74ed198c30
+        with:
+          toolchain: 1.97.0
+          components: rustfmt, clippy, llvm-tools-preview
+          targets: wasm32-unknown-unknown
+      - name: Install licensing checker
+        run: pipx install reuse==6.2.0
+      - name: Install frozen composition and check Notebook
+        run: |
+          python3 -B tooling/.github/composition/run-composition.py \
+            --target personal-knowledge-notebook --revision "$INPUT_TARGET_REF" \
+            --root "$GITHUB_WORKSPACE/composition" --phase check
+      - name: Preload locked native dependencies
+        working-directory: composition/personal-knowledge-notebook
+        run: cargo fetch --locked
+      - name: Run native Notebook tests
+        run: |
+          python3 -B tooling/.github/composition/check-products.py \
+            --root "$GITHUB_WORKSPACE/composition" --target personal-knowledge-notebook --gate native \
+            --bun "$(command -v bun)" --cargo "$(command -v cargo)" --node "$(command -v node)"
+      - name: Build current Notebook WASM
+        run: |
+          python3 -B tooling/.github/composition/check-products.py \
+            --root "$GITHUB_WORKSPACE/composition" --target personal-knowledge-notebook --gate wasm \
+            --bun "$(command -v bun)" --cargo "$(command -v cargo)" --node "$(command -v node)"
+      - name: Install WebKit for the locked Playwright version
+        working-directory: composition/personal-knowledge-notebook/apps/notebook
+        run: bun x --no-install playwright install webkit
+      - name: Run positive WebKit browser tests
+        working-directory: composition/personal-knowledge-notebook
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+          environment = os.environ.copy()
+          # Same narrow Rust-action normalization as the pinned product runner.
+          # Unexpected controls remain visible to the build's rejection checks.
+          if environment.get('CARGO_INCREMENTAL') == '0':
+              environment.pop('CARGO_INCREMENTAL')
+          subprocess.run(
+              ['bun', 'run', '--cwd', 'apps/notebook', 'test:e2e',
+               '--project=webkit', '--workers=1'],
+              env=environment, check=True, timeout=1800,
+          )
+          PY
