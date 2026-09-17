@@ -150,9 +150,13 @@ test("removes encrypted restore staging left by an interrupted process", async (
   context,
   page,
 }) => {
-  await page.goto("/");
-  await assertRuntimeReady(page);
-  await page.evaluate(async () => {
+  // Fixed phase markers localize an unresolved browser call without exposing records.
+  console.info("restore-recovery: initial-navigation");
+  await test.step("initial navigation", () => page.goto("/"));
+  console.info("restore-recovery: initial-readiness");
+  await test.step("initial readiness", () => assertRuntimeReady(page));
+  console.info("restore-recovery: stage-indexeddb");
+  await test.step("stage IndexedDB record", () => page.evaluate(async () => {
     await new Promise<void>((resolve, reject) => {
       const open = indexedDB.open("libre-ai-notebook", 1);
       open.onerror = () => reject(new Error("database unavailable"));
@@ -172,16 +176,22 @@ test("removes encrypted restore staging left by an interrupted process", async (
         transaction.onabort = () => reject(new Error("staging unavailable"));
       };
     });
-  });
+  }));
 
-  await page.close();
-  const recoveredPage = await context.newPage();
-  await recoveredPage.goto("/", { waitUntil: "domcontentloaded" });
-  await expect(recoveredPage.getByTestId("backup-status")).toHaveText(
+  console.info("restore-recovery: close-original-page");
+  await test.step("close original page", () => page.close());
+  console.info("restore-recovery: create-recovery-page");
+  const recoveredPage = await test.step("create recovery page", () => context.newPage());
+  console.info("restore-recovery: recovery-navigation");
+  await test.step("recovery navigation", () => recoveredPage.goto("/", { waitUntil: "domcontentloaded" }));
+  console.info("restore-recovery: await-cleanup-status");
+  await test.step("await cleanup status", () => expect(recoveredPage.getByTestId("backup-status")).toHaveText(
     "Une restauration interrompue a été nettoyée sans libérer de plaintext.",
-  );
-  const records = await inspectBackupStore(recoveredPage);
+  ));
+  console.info("restore-recovery: inspect-indexeddb");
+  const records = await test.step("inspect IndexedDB records", () => inspectBackupStore(recoveredPage));
   expect(records.keys.some((key) => key.startsWith("pending:"))).toBe(false);
+  console.info("restore-recovery: completed");
 });
 
 async function inspectBackupStore(page: import("@playwright/test").Page): Promise<{
