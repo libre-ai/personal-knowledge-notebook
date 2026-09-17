@@ -1,0 +1,32 @@
+{
+  "name": "@libre-ai/notebook",
+  "version": "0.1.0",
+  "private": true,
+  "license": "EUPL-1.2",
+  "type": "module",
+  "engines": {
+    "bun": ">=1.4.0"
+  },
+  "scripts": {
+    "check:bun": "bun ../../node_modules/@libre-ai/governance/tools/quality/check-bun-minimum.ts",
+    "prebuild": "bun run check:bun",
+    "build": "bun scripts/build.ts",
+    "prebuild:gate-b": "bun run check:bun",
+    "build:gate-b": "NOTEBOOK_BACKUP_FEATURE_ENABLED=1 bun scripts/build.ts",
+    "prestart": "bun run check:bun",
+    "start": "bun src/server/index.ts",
+    "pretest": "bun run check:bun",
+    "test": "bun test",
+    "pretest:e2e": "bun run check:bun",
+    "test:e2e": "bun run build:gate-b && playwright test"
+  },
+  "dependencies": {
+    "@libre-ai/ui": "file:../../../application-development-toolkit/packages/ui",
+    "@libre-ai/web-platform": "file:../../../application-development-toolkit/packages/web-platform",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1"
+  }
+}

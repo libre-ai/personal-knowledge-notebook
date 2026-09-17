@@ -1,0 +1,87 @@
+@layer components {
+  .notebook-header,
+  .notebook-main {
+    width: min(100% - 2rem, 52rem);
+    margin-inline: auto;
+  }
+
+  .notebook-header {
+    padding-block: var(--lai-space-8) var(--lai-space-4);
+  }
+
+  .notebook-main {
+    display: grid;
+    gap: var(--lai-space-6);
+    padding-block-end: var(--lai-space-12);
+  }
+
+  .notebook-eyebrow {
+    margin: 0;
+    color: var(--lai-color-muted);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .notebook-main .lai-button:hover:not(:disabled) {
+    color: var(--lai-color-on-accent);
+    background: var(--lai-color-accent-strong);
+  }
+
+  .notebook-main .lai-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .notebook-main form {
+    display: grid;
+    gap: var(--lai-space-3);
+  }
+
+  .notebook-main input {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--lai-space-2) var(--lai-space-3);
+    border: 0.1rem solid var(--lai-color-border);
+    border-radius: var(--lai-radius-sm);
+    color: var(--lai-color-ink);
+    background: var(--lai-color-canvas);
+  }
+
+  .notebook-main label {
+    margin-block-start: var(--lai-space-2);
+    font-weight: 700;
+  }
+
+  .notebook-recovery {
+    margin-block-start: var(--lai-space-6);
+    padding: var(--lai-space-4);
+    border: 0.15rem solid var(--lai-color-focus);
+    border-radius: var(--lai-radius-sm);
+  }
+
+  .notebook-recovery output {
+    display: block;
+    max-width: 100%;
+    padding: var(--lai-space-3);
+    overflow-wrap: anywhere;
+    font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: var(--lai-color-canvas);
+  }
+
+  .notebook-status {
+    min-height: 3rem;
+    padding: var(--lai-space-3) var(--lai-space-4);
+    border-inline-start: 0.3rem solid var(--lai-color-border);
+  }
+
+  .notebook-status--error {
+    border-inline-start-color: var(--lai-color-focus);
+  }
+
+  .notebook-status--success {
+    border-inline-start-color: var(--lai-color-accent);
+  }
+}

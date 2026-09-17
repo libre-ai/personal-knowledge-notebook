@@ -1,0 +1,1270 @@
+{
+  "schemaVersion": "code-recovery.v1",
+  "files": [
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": ".cargo/config.toml",
+      "sourceBlob": "96b624fb3c2466d51b9ab4ac90409b0a5ef7b01a",
+      "destinationPath": ".cargo/config.toml",
+      "sha256": "91a502066e179b2525929d903b188b1b6bb10e6b105a81b33a834497c50481a4"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": ".gitignore",
+      "sourceBlob": "5a430e6a37059665b16bc9d2075c97607dff339d",
+      "destinationPath": ".gitignore",
+      "sha256": "19b23de57a80020117177f6f3a34b5b5ce98c2623a8e8e6e211453bbf6458bfa"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "CONTRIBUTING.md",
+      "sourceBlob": "5102ec384969e70ac9acd046519786197bb5b410",
+      "destinationPath": "CONTRIBUTING.md",
+      "sha256": "7b169d71a2428fa7193a0e89b70f7d6b1abe99b090d6b35f9c4359ae80806255"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "Cargo.lock",
+      "sourceBlob": "c1c9b144e189cc61215da46d25af19237bbace17",
+      "destinationPath": "Cargo.lock",
+      "sha256": "3389570dfd54043be89d4c2d0345ba395dbb038c1d97fd34b674384da13b5813"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "Cargo.toml",
+      "sourceBlob": "ad9768aa611cd6c903ef96a7cc489d98348fc961",
+      "destinationPath": "Cargo.toml",
+      "sha256": "4b0b25cf02338ff51711b4b808e778e4be556f0fcf7690cd69b96e288c4f068b"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "LICENSE",
+      "sourceBlob": "acbe963c8d54d9a308c5f404f62844302e41e5a0",
+      "destinationPath": "LICENSE",
+      "sha256": "727348b1e1bb83292c623badf0ba8f0a85f19efc28847de9316ee3299b7a9177"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "LICENSES/CC-BY-4.0.txt",
+      "sourceBlob": "13ca539f377dc705af32b8d2ce89262298ea2f06",
+      "destinationPath": "docs/source-licensing/notebook/LICENSES/CC-BY-4.0.txt",
+      "sha256": "d557539df68e771cc1eedcc91d13f70fca930e508d11eedcafa4b15db49e3744"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "LICENSES/EUPL-1.2.txt",
+      "sourceBlob": "6d8cea430e21d06532225018850da91a3f44abf5",
+      "destinationPath": "LICENSES/EUPL-1.2.txt",
+      "sha256": "57fb42fbcd0b037ce528ed8f72f1ec095d67bc6825ecf1448ff39be1fe68a4b4"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "LICENSES/LicenseRef-ThirdParty-Notices.txt",
+      "sourceBlob": "b20d9e10ee859e253ef0c46e8569303002ffea22",
+      "destinationPath": "LICENSES/LicenseRef-ThirdParty-Notices.txt",
+      "sha256": "d8b3ae7301ae7459b206232a201a1a431ccf6fe3b813a7b203fe5d5d95e33026"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "REUSE.toml",
+      "sourceBlob": "633ef064a811d56f57c6535368a66cf740a6628e",
+      "destinationPath": "REUSE.toml",
+      "sha256": "ac2eb685d304c1281832160dd7259b3669d9f79feb99e78f9d5697f90eb657c2"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "ROADMAP.md",
+      "sourceBlob": "6073c7fa95fb05e5594c201aa9d4b2b63d68827c",
+      "destinationPath": "ROADMAP.md",
+      "sha256": "57e7bd386779e888662c0c18c1d19c2c3ed61654aadf2b547ebbf19b34922b6f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "SECURITY.md",
+      "sourceBlob": "fd58bb6ca4b6ea5c219cabef7b47f6f23bd04d21",
+      "destinationPath": "SECURITY.md",
+      "sha256": "34eafac992ff27068b029ecc1994970792dfae3602cdc607de697afbd26f6891"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/README.md",
+      "sourceBlob": "5d100cc692ab21075d34c7bb67297905e33100b5",
+      "destinationPath": "apps/notebook/README.md",
+      "sha256": "cd101ea9890821d880d30a2183f5c1e56cbdafc39f8153c9a17ae376fb46e0da"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/bun.lock",
+      "sourceBlob": "adc03d2c8dd0aea4d62598f3168e016646337794",
+      "destinationPath": "apps/notebook/bun.lock",
+      "sha256": "84da0e07c389934afc422335a02b6ae3822d2f1cd14d8004d8c766be3735dd5f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/e2e/backup-host.e2e.ts",
+      "sourceBlob": "e9a16ee82d6bdbfab0ddb480ade968af5e73c471",
+      "destinationPath": "apps/notebook/e2e/backup-host.e2e.ts",
+      "sha256": "4f982eeaa11415f0e0d6751e6b877c0e8ea4dc411a11ee894b523bad2af643c3"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/e2e/no-js.e2e.ts",
+      "sourceBlob": "1a18c128109e4a609cef5a9f6e99724fc8010fd7",
+      "destinationPath": "apps/notebook/e2e/no-js.e2e.ts",
+      "sha256": "a1f9682d56a7edcbc79df6ab6c7faa16e23f4bb7c385cf0ae271b4818e6afc8d"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/package.json",
+      "sourceBlob": "b9ec440303af813cdcbf93173e2db1a84fba474d",
+      "destinationPath": "apps/notebook/package.json",
+      "sha256": "66ee67c418ff8260dcf76051acd830e8d49c36ef3e86cdff4e267102252d0e42"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/playwright.config.ts",
+      "sourceBlob": "8206bb6fb55f939403f787200d7258f581ffb109",
+      "destinationPath": "apps/notebook/playwright.config.ts",
+      "sha256": "e126ab5ddf545c067ee1ea0e2d0ea40129bb9aec2969432814a6bd58ce8b29bd"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/public/icon.svg",
+      "sourceBlob": "f3eada72a8324f7d2f4f5e40d148bd977b86e8f0",
+      "destinationPath": "apps/notebook/public/icon.svg",
+      "sha256": "5c0bf6d58d03d0a5a8114ff30afa3670446dc9bb13687cde8efd64093cff9830"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/scripts/build.ts",
+      "sourceBlob": "70474a444225f0818e64975d7efa8bead41308ad",
+      "destinationPath": "apps/notebook/scripts/build.ts",
+      "sha256": "9031c235d0e238db7534ea78723220afbfdc43c31cb9b5df3ea02dfa33642b5b"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/controller.test.ts",
+      "sourceBlob": "442abe39b6fe840ea0a12c692bfdd3b4774fa880",
+      "destinationPath": "apps/notebook/src/backup/controller.test.ts",
+      "sha256": "f41a1970358d8874c61ae1a63616012ad64c4f61e640af8b4478fc8466b93454"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/controller.ts",
+      "sourceBlob": "60634e127be95ccb37fe5205c6bddb821d21aba7",
+      "destinationPath": "apps/notebook/src/backup/controller.ts",
+      "sha256": "5230868b8a23046e2743cfdd10a2a58dc65443545592ac596cc5812ed7baf201"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/download.ts",
+      "sourceBlob": "2987196c91100f59e515c1ae5bbb4be84a5d9978",
+      "destinationPath": "apps/notebook/src/backup/download.ts",
+      "sha256": "574c41f97b2e767d4934197d4d3c44e213e9d088cb19845dfc9445e6c3afb0b3"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/feature.test.ts",
+      "sourceBlob": "05ba4e2663fd478a7f1cbfeee90c8102b58dae59",
+      "destinationPath": "apps/notebook/src/backup/feature.test.ts",
+      "sha256": "d54444479275ac799fe2d4dacdbf00c1762b7aec493e8769152b05b2b7f661fb"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/feature.ts",
+      "sourceBlob": "e37340edbd290f8f0e7a6661c4cde2e2c3daa581",
+      "destinationPath": "apps/notebook/src/backup/feature.ts",
+      "sha256": "bc129dbe783e73237bc84afcb58a4b27ea50fa993b17118a79454465f6ad612b"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/indexed-db.test.ts",
+      "sourceBlob": "41ab27a526d9609e8b3c5ca23b57f9cb5ce12470",
+      "destinationPath": "apps/notebook/src/backup/indexed-db.test.ts",
+      "sha256": "6bde835c5ba0e4357129e50e5f7abc2cec4c79780ede472089618a27a2eda30e"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/indexed-db.ts",
+      "sourceBlob": "a9ceabb9c431aafde4fcc63c373a40535c742020",
+      "destinationPath": "apps/notebook/src/backup/indexed-db.ts",
+      "sha256": "68e57993ccc89706af18ef6d2738b484ca5e4285141ef6061258e827886cdb8e"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/material.test.ts",
+      "sourceBlob": "1678e18bbe416d8971f6a87d2162aeba24a22e8b",
+      "destinationPath": "apps/notebook/src/backup/material.test.ts",
+      "sha256": "47a5009e60f3636e70d104aa6fc9b6af463a7b01fcb37f078c0b620c7a8c45d1"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/material.ts",
+      "sourceBlob": "aecd21f0b565cd635b6a76b0c10a5134d2e31ed7",
+      "destinationPath": "apps/notebook/src/backup/material.ts",
+      "sha256": "31ee9df7d09dd5ab124eaf4abcfeceeb605a093b042da1aa58cc8fcca186b79f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/notebook-core-worker.ts",
+      "sourceBlob": "ec0954c672d6d29bacff6ac2f514e8836441fead",
+      "destinationPath": "apps/notebook/src/backup/notebook-core-worker.ts",
+      "sha256": "962e17feae34a1ea0496375df5e00ab9db7e55f29a229803d54b604609b09421"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/operation-host.test.ts",
+      "sourceBlob": "fed9620d592b7d5196ab9790e7e2f3494b745356",
+      "destinationPath": "apps/notebook/src/backup/operation-host.test.ts",
+      "sha256": "fac7015bb4c5bf33e08e8beeca22bd95e1c198103ae9d9f00ddc3ed518385528"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/operation-host.ts",
+      "sourceBlob": "d640ebc8b8646fd5864e671f357bbf2270117462",
+      "destinationPath": "apps/notebook/src/backup/operation-host.ts",
+      "sha256": "d7476ae568168e751bcfe7d510ff0b87c62de0ebf95252f6e2c72280f9a7a32a"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/preflight.ts",
+      "sourceBlob": "e2145f03b9d2bbce15e8afa68764becc4a442a15",
+      "destinationPath": "apps/notebook/src/backup/preflight.ts",
+      "sha256": "d3282629986780f96c46d120893c18921902fceb7eaedd2c905bdbdc974dcc20"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/public-fixture.ts",
+      "sourceBlob": "5ea2448666d3ad79c14a78f3ce92518e65586616",
+      "destinationPath": "apps/notebook/src/backup/public-fixture.ts",
+      "sha256": "29431b33c2685e037c56aecc6b6dd2f9e258b9031a5af614d852eae2df08b488"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/backup/types.ts",
+      "sourceBlob": "1a63628f0947f376079e8592af905134366e325d",
+      "destinationPath": "apps/notebook/src/backup/types.ts",
+      "sha256": "4daa789cd93802e17deeeafb9c78dbde7a7f4515e2d5737770f06897e1d962ff"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/client/app.tsx",
+      "sourceBlob": "894ea3cd8fd000043b2826ae20e64dbaf5a2f908",
+      "destinationPath": "apps/notebook/src/client/app.tsx",
+      "sha256": "8a79abe5098564b0169ae1cff162b0cc3d7d1ea9731182c8012f25fa4d3c927f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/domain/block.test.ts",
+      "sourceBlob": "70a9ec506c38a2058f00ea6611125ddc87787ab3",
+      "destinationPath": "apps/notebook/src/domain/block.test.ts",
+      "sha256": "964d5eff7f973f062424bc3b80db0840a880825ee45fbf2d586441809601d382"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/domain/block.ts",
+      "sourceBlob": "f25be61fac005eaab2708e104c9ac743dad34c65",
+      "destinationPath": "apps/notebook/src/domain/block.ts",
+      "sha256": "5e818fd347ad6866f099e1f1594a8043c9f5abeb3d663fe7cff06a36c3ee1415"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/server/build-manifest.test.ts",
+      "sourceBlob": "69f916349d00850c3347a9c1b5aa3e2bd54793b1",
+      "destinationPath": "apps/notebook/src/server/build-manifest.test.ts",
+      "sha256": "428927cfad8af205625c7c11efbbf41b944f498b9cea1d25cb108a2dbbf2a054"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/server/build-manifest.ts",
+      "sourceBlob": "19c4ca9100eb6b7a8ec432b3fb7bec507d5f3f0a",
+      "destinationPath": "apps/notebook/src/server/build-manifest.ts",
+      "sha256": "0d4d9f90bc066504cf4db5dbab9471c1d1ab610cec2ce9d74ed86046f76b21fe"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/server/handler.test.tsx",
+      "sourceBlob": "4613facbf6db0d87d4a8a645e287afd7595ac67f",
+      "destinationPath": "apps/notebook/src/server/handler.test.tsx",
+      "sha256": "f48f903eaf9ec4f88ad16ab977a847f4421f1e48c551c08de80139c54bb2e8be"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/server/handler.ts",
+      "sourceBlob": "1acfb1f64e8cbb185994c2e6a133ef93aa0c4293",
+      "destinationPath": "apps/notebook/src/server/handler.ts",
+      "sha256": "90e7b259074632d76046a9ae77edcf3ebb691471ef0ab631f62e01cb5b3aa3fb"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/server/index.ts",
+      "sourceBlob": "1c10ae83ac85387a3590f2b8c786ed14f19c535d",
+      "destinationPath": "apps/notebook/src/server/index.ts",
+      "sha256": "dcb8e235831f7ed0da902a7e2409ea70bf6913da232524abab030fd16a276d2e"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/shared/document.tsx",
+      "sourceBlob": "bc16b80e8a7dc257d1f3e09477bf8cdfc12ca1a5",
+      "destinationPath": "apps/notebook/src/shared/document.tsx",
+      "sha256": "13ebeba7c81a013eb508a05c43a04e2134e81bc14532f4183bf744604e9d85a8"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/ui/notebook-app.tsx",
+      "sourceBlob": "8b631eea18eccd8563c5d860b3fe358fa542bc26",
+      "destinationPath": "apps/notebook/src/ui/notebook-app.tsx",
+      "sha256": "edc1e08fa92f680f6205a8873bb0fcfa94aae4ee5feb9b0b5aa6f99bf12ed838"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "apps/notebook/src/ui/notebook.css",
+      "sourceBlob": "1a4805e3c89a8a49103348a8d2e42b9f778b621f",
+      "destinationPath": "apps/notebook/src/ui/notebook.css",
+      "sha256": "337e0af1d412608eb2a0938f9a2424178e7b9f5fe35817ec77158d8679dbcd95"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "biome.json",
+      "sourceBlob": "b7d5c3da9a6fbab64ea9b303d21178ac79161679",
+      "destinationPath": "biome.json",
+      "sha256": "0506fc50e1cba3340e08226f6ce80db8e39a8f226fa2a1aefecb44390caf049e"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "bun.lock",
+      "sourceBlob": "3b586d2c4be82673397113515a3b857f20de9813",
+      "destinationPath": "bun.lock",
+      "sha256": "2465bc5a51002efbfedc97cd7f20a3dd140c30bd8944ede2a7067658e1384f54"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "bunfig.toml",
+      "sourceBlob": "187aad3cc3469a3aa9a58a0979a0e10f61fce2b9",
+      "destinationPath": "bunfig.toml",
+      "sha256": "5da4d7eb4d1e5c1c37d487034e56773e8e1f568daec675b114c5257942f48342"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/Cargo.toml",
+      "sourceBlob": "7c4af50574bb281e5886eefb27fac93d61aafd91",
+      "destinationPath": "crates/notebook-core/Cargo.toml",
+      "sha256": "08adc1b272373718af184ad2baf8fbb21e01d92dc3fc961da691bff757f2c8c9"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/DEPENDENCIES.md",
+      "sourceBlob": "892bfa361d3d4713233febbb7d7a292fd8033ab4",
+      "destinationPath": "crates/notebook-core/DEPENDENCIES.md",
+      "sha256": "f0b2133251924d843efdeb94ae7af5cf6385100af188b1db648cefac4f6133e0"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/README.md",
+      "sourceBlob": "278acc1a30418226d13fb2a41aa60b75217c24e8",
+      "destinationPath": "crates/notebook-core/README.md",
+      "sha256": "f9c1017f2e37c633898cbd4a28807cb238ee9e68934d8f5c564ce19a9e75249c"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/build.rs",
+      "sourceBlob": "0ba267e01e117339f77ae8261b2aee47545bfa66",
+      "destinationPath": "crates/notebook-core/build.rs",
+      "sha256": "ce175ecb43eed87848e0415c6def91af3fb1230cb381e61496a645411c1a72fe"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/examples/benchmark_profile.rs",
+      "sourceBlob": "e55aaec10b063a4f0b5eb764e08c388d9f9a7e49",
+      "destinationPath": "crates/notebook-core/examples/benchmark_profile.rs",
+      "sha256": "563b797ec3129fb73c2b1c9836acb59f4e829531fd5ad113d848b6cdb57b65d3"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/examples/check_wasm_imports.rs",
+      "sourceBlob": "ecc2ea9d45d0648a3d7119c875460139a3fc7204",
+      "destinationPath": "crates/notebook-core/examples/check_wasm_imports.rs",
+      "sha256": "2c9cab5ca8d27b17850e5e12147d6c2385d4d1b824ef69332bc62fee110df6e9"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/examples/inject_wasm_trap.rs",
+      "sourceBlob": "5a9730e05c986043042e3952f89d5dc949184a7d",
+      "destinationPath": "crates/notebook-core/examples/inject_wasm_trap.rs",
+      "sha256": "921450b6120a2af61a53450bb362caf1c0347f011091d338047c46d924a1b869"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/canonical.rs",
+      "sourceBlob": "240316f4240ccd3c19fcf12a16b5a22ca20ca2b6",
+      "destinationPath": "crates/notebook-core/src/canonical.rs",
+      "sha256": "a244317aa64d6d0350645ee47103bcd27c9ddf3aa470cd7e14afa6684f6b42eb"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/component.rs",
+      "sourceBlob": "5ae003b61696b921b8d25b38c9535e84c3787fa9",
+      "destinationPath": "crates/notebook-core/src/component.rs",
+      "sha256": "351a771246a6eed9636459944a777e9b27639d87c0232b6b7d27135f734e05d0"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/crypto.rs",
+      "sourceBlob": "d2da3f96dfbff0eeef89ff23eef895d09853d606",
+      "destinationPath": "crates/notebook-core/src/crypto.rs",
+      "sha256": "2b1eaf6e86f8322df5cb46563ca3f78de83de9617039bd2eb15ca3e3a247ab47"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/error.rs",
+      "sourceBlob": "132a91cf1695807e2e7a7fbf2dd9e3facb98e509",
+      "destinationPath": "crates/notebook-core/src/error.rs",
+      "sha256": "0054c0b115c6aacb751b6561fb714693a5757ce3e45c13792ecf222f76a837ce"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/lib.rs",
+      "sourceBlob": "a53abde5c753705bbe2d386c1c99bade6b3c5e1c",
+      "destinationPath": "crates/notebook-core/src/lib.rs",
+      "sha256": "0d8d888efb7f28d74c429187216470bcc47a4bb31beca1c498d9543e8f00cd4a"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/model.rs",
+      "sourceBlob": "91fe53a9e7c063943a8870e9ba496319ae45702f",
+      "destinationPath": "crates/notebook-core/src/model.rs",
+      "sha256": "26408f9c55a2e0df42cde987c39bdf566087866d74d83a36fe7b0c878dc367a8"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/qualification_allocator.rs",
+      "sourceBlob": "59fa7477b13a67acf660bb978c14ec64890272bf",
+      "destinationPath": "crates/notebook-core/src/qualification_allocator.rs",
+      "sha256": "c816a032499c01c40d25fb11081d79457938aac7675908ee8afa6bafe2e3e2bc"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/qualification_faults.rs",
+      "sourceBlob": "308cde8795c49027c72d72667ff18040b941426b",
+      "destinationPath": "crates/notebook-core/src/qualification_faults.rs",
+      "sha256": "4ca821abc771831f47b7cebee00459a4ee6068f4f25290c195c5d00268b7a10f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/src/validate.rs",
+      "sourceBlob": "0361d9ca5adfa6ae927db4e5e8760ccd9f3f2798",
+      "destinationPath": "crates/notebook-core/src/validate.rs",
+      "sha256": "1391130c61ee8488b14fab046c5c565b08ac671fd45c4101021c349f98f443bd"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "crates/notebook-core/tests/golden.rs",
+      "sourceBlob": "de3b2c27f338544500a5c1c0fdcc79e952537a80",
+      "destinationPath": "crates/notebook-core/tests/golden.rs",
+      "sha256": "3b3c7e223656ea7177125e32cb10c5fffabf6bb7c6f9c14b542edf3a8fd29368"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "deny.toml",
+      "sourceBlob": "49bc1a28a5742b6f1b531938603bb34510c54ba3",
+      "destinationPath": "deny.toml",
+      "sha256": "8fbd07c98a3d69cfdd87e7cd27ed249bb73fecb77fd35ae7846fa84f65fd7eaf"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "docs/apps/notebook-resource-floor.md",
+      "sourceBlob": "ac654b48a1feb6a996d0000505ef8a35e6b2e5f7",
+      "destinationPath": "docs/apps/notebook-resource-floor.md",
+      "sha256": "badbbcfc1ffcbb1e626f10a871a0ebdee78ef5ef92c2d2af2ea1f92dc969c740"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "docs/apps/notebook.md",
+      "sourceBlob": "15a94d4afeee0d84067a51bb7ec2abaa8330b3eb",
+      "destinationPath": "docs/apps/notebook.md",
+      "sha256": "65450edce0487ecdb6684be212cd41d2da4c2ee0505551e710855c0626958981"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "docs/product-readiness.md",
+      "sourceBlob": "3c54503e17a7acdeeb4c6c4021291111dee4b937",
+      "destinationPath": "docs/product-readiness.md",
+      "sha256": "1f20e7f916865dc2d1823d05b90ac404af99b00e4fe4a92cad757f303b15e729"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "package.json",
+      "sourceBlob": "f32bb31807c8a0a8f4a51c3ab7b2bfbed48eb751",
+      "destinationPath": "package.json",
+      "sha256": "9ef504161f05009fa2d340436982cbc3ec3820bcee6efc90756322afa39b303f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "rust-toolchain.toml",
+      "sourceBlob": "255892208cde9f8cdd7dde6bbb830105c2e8599f",
+      "destinationPath": "rust-toolchain.toml",
+      "sha256": "eb8ed53423a7d9d3e3b3fc0367ee89426b4b9385114465919926b2829bfe7ecd"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "scripts/check-component-encoding.ts",
+      "sourceBlob": "d790e9806609e975bd89339e8b4674de8b0a163b",
+      "destinationPath": "scripts/check-component-encoding.ts",
+      "sha256": "d204d567da4e8332d0fcd255e1558aa360a0621e935918826e8a0ced5c4cd764"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "scripts/check-vendored-wit.ts",
+      "sourceBlob": "56c17435057e021c6d99a5eda7c832e0bdd42710",
+      "destinationPath": "scripts/check-vendored-wit.ts",
+      "sha256": "f5c7ae865c059f4ce0146043ca0a5bfcb5a54335637ab93b598fe905b80467a8"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/dtcg-format-2025.10/LICENSE.design-tokens.md",
+      "sourceBlob": "aa8ea5ea13f89efb19ffd000d99153dff85a1ddb",
+      "destinationPath": "third_party/dtcg-format-2025.10/LICENSE.design-tokens.md",
+      "sha256": "bf4cbbb7857eed7a71daf931386435bddf72a261610faa6a50c2e8016a8a028d"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/dtcg-format-2025.10/README.md",
+      "sourceBlob": "9ebb3cdd8e60689bc288394d9238644e6592dbbd",
+      "destinationPath": "third_party/dtcg-format-2025.10/README.md",
+      "sha256": "1fcbf45fa9dab02176b1e46d2ff280aa7f14c3985611b971594513670291b4db"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/dtcg-format-2025.10/dtcg-format-2025.10.schema.json",
+      "sourceBlob": "0d1eb1f5e397b913fa4edee5bb356d21aec999d0",
+      "destinationPath": "third_party/dtcg-format-2025.10/dtcg-format-2025.10.schema.json",
+      "sha256": "32e93b780e4e4bca778d0780cb797a560deedc470c608af16576223f7e42915f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/BACKEND.patch",
+      "sourceBlob": "f135870d932ddc18a7e2f086d444a51844d46988",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/BACKEND.patch",
+      "sha256": "b9e251ff0d818bdb2051f97373f75d8ed99c59e03e7ca4fbfdb77f332d6957bf"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/CHANGELOG.md",
+      "sourceBlob": "a8db025ecbe68c2a7a2db261c486728c53390aa3",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/CHANGELOG.md",
+      "sha256": "0e1b7223337e858b79e5ae3eda7375ddaf2f2cfa9288eb7b97739eee537c7282"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/Cargo.toml",
+      "sourceBlob": "1330e0ba4c7369f9cf036d4bf737886238113b6e",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/Cargo.toml",
+      "sha256": "d2039296db6600581d472eac24b0605e4bd2bcf5a896f88f2a0b535d2164ed71"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/LICENSE-APACHE",
+      "sourceBlob": "78173fa2e753d614bb0aa5ad125ddbbe70b282c4",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/LICENSE-APACHE",
+      "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/LICENSE-MIT",
+      "sourceBlob": "f5b157a6cfb7c41757a4f8f0f3bfd59a7473a602",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/LICENSE-MIT",
+      "sha256": "f7e8ab639afef15573680c97f796166835cbeb3865175882fea41c60d106b733"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/PATCH.md",
+      "sourceBlob": "70d75d5cbb8c45ed8a933637556d3dbdb762f031",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/PATCH.md",
+      "sha256": "5417e3032ed473b438b768ede6c8d84d0345f869b24e6af2ce483dca9b3522b3"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/README.md",
+      "sourceBlob": "ce95a3a14c5284248ab1d2cd80bc5f4a0fadc68a",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/README.md",
+      "sha256": "fd8bd9c342defe127d5e751445af9b67ff84de509a3e595c66011909ef8d4428"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/armv8.rs",
+      "sourceBlob": "3ece1b4442b9caca40fa3e0b3d0bed8e0fa1a542",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/armv8.rs",
+      "sha256": "bc8ff3cae2f799d849105b79091604e1579ae5e8a8fbe19db24c6ccbf48146a4"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/armv8/encdec.rs",
+      "sourceBlob": "09c59cee4ce09516334f30b4f8117f52e3878ae8",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/armv8/encdec.rs",
+      "sha256": "54f85c5942fbb384c106321fb54aa06f29ae16be87ebce127fd4932a329a4feb"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/armv8/expand.rs",
+      "sourceBlob": "7cbcb0ce6312a46fee6cfecceee52b40b8e240eb",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/armv8/expand.rs",
+      "sha256": "d40ee141eb7dec4ccb675455ec93fe08a75dfd228bc5339096cfa8d7270ff375"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/armv8/hazmat.rs",
+      "sourceBlob": "3e078cfee189d1b15f12c75531af31de2fd53de1",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/armv8/hazmat.rs",
+      "sha256": "f6d722a53ca464b16b1bc9bb7c23a5780510252cbcb059735e2acf656c5b2cbe"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/armv8/intrinsics.rs",
+      "sourceBlob": "752af4927c2a989841b5834dbd7fc4e869cc73f5",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/armv8/intrinsics.rs",
+      "sha256": "3192f65da7cac81f3a48601d950c66c72814fa9cacab9a9d8c8969dbae6b098c"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/armv8/test_expand.rs",
+      "sourceBlob": "23ca90aa3bcd1ad22134ada0e776050ebdd6ccd2",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/armv8/test_expand.rs",
+      "sha256": "7bc04e7fc5bba65f4451c86ba2e80ce98b04faa734f16d28af09660c5623d96a"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/autodetect.rs",
+      "sourceBlob": "ac471fabf1024433ef0fe4e71717233897f16fc7",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/autodetect.rs",
+      "sha256": "150d63066a8f1a6cac359661752db49d2d5c8d2d5b34cfee413072ff95b9041f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/hazmat.rs",
+      "sourceBlob": "4776bb4e37403ce560f65c62101afc113bd18968",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/hazmat.rs",
+      "sha256": "7198ef0d62287642cd4d7394295f333fbc69d95938c7541f82f2492ce9bd7d47"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/lib.rs",
+      "sourceBlob": "1df43ea69ff59fe0adfbe6baa609ba34fb8e5195",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/lib.rs",
+      "sha256": "8904ed0f1da5d3c6ca6cfb61add4a957054a9f95ce573c3ab198b59ba9ab06cd"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/ni.rs",
+      "sourceBlob": "15b49ef51654d3d89d9db165d3f2dda6ee19886c",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/ni.rs",
+      "sha256": "15b9a67dbedc3b558ddec063489be4a6607e568afddd8345506be36952fc3bde"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/ni/aes128.rs",
+      "sourceBlob": "b0836a16877db30483eb37138f1c02382ef3252a",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/ni/aes128.rs",
+      "sha256": "88b94c99163b6b82810d7817e02374ddca4086b0896a8ebe183241a604ec92be"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/ni/aes192.rs",
+      "sourceBlob": "eee1f211aa760d50f72bf5e0a80c8b62fc4e7c87",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/ni/aes192.rs",
+      "sha256": "156254b46e469a20e09a1cefa22bae2afd9c10e2b68fd2bf40eaf9a05095cdda"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/ni/aes256.rs",
+      "sourceBlob": "bea090abd8272a4bc81aa4b43380eb9334c1ec8f",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/ni/aes256.rs",
+      "sha256": "f9fba1a4ac1e91fc908f3164460fc531f91cf0b0d015b3463056d0bd97981eae"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/ni/hazmat.rs",
+      "sourceBlob": "a2a735a3acbb87a1bbfe0c85f4dbc011c309bed4",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/ni/hazmat.rs",
+      "sha256": "eeeb4a8cd92204095ecef3d40e1786dede05b63afba41c9fa3e9b871f40eb6d8"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/ni/test_expand.rs",
+      "sourceBlob": "6ab87c5e33869e0b901b5d0b4705b62609978bb9",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/ni/test_expand.rs",
+      "sha256": "6ad46711aeb49c21144ea31f801493ab87d3cb19d35bb3610657bfadfa75d044"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/ni/utils.rs",
+      "sourceBlob": "1bd6522d4cfef5364251204cdbd60fb739591110",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/ni/utils.rs",
+      "sha256": "10fe6c0ad778a59cde5cef6cb6bc478cc68d21e28bda9331ced3c26b0a732426"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/soft.rs",
+      "sourceBlob": "9b4f3c59cc6788b893cbbaf90672fbee4872daf3",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/soft.rs",
+      "sha256": "06a42ff267067bb7c1d2c0702639538fc3b29f1963d8297234c9947495540ba7"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/soft/fixslice32.rs",
+      "sourceBlob": "45b674d6d83436a1dc8788c28d47bb9f52634090",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/soft/fixslice32.rs",
+      "sha256": "c69c0fa430cb62c4d88a13d5c3387202e1962b47978a6a7026bd34789f2d2577"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/src/soft/fixslice64.rs",
+      "sourceBlob": "09dbcbe97b76c6732d445ff324cbe31bab68a23e",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/src/soft/fixslice64.rs",
+      "sha256": "b071d85916e4e09da703168eb7cebc2ba4c4ab2b783713b8caf9541742b741e3"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/tests/data/aes128.blb",
+      "sourceBlob": "0accb99eb444c47207eebd13422e0505c3052994",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/tests/data/aes128.blb",
+      "sha256": "96bd534f5025089a88d1062d666e1228fc507334b61f08ba9033d3e85e36a356"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/tests/data/aes192.blb",
+      "sourceBlob": "b5f70fa00ce7ed9f68fdc43b979fc5fba5b3142d",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/tests/data/aes192.blb",
+      "sha256": "4361e569dd7413058b1c73b89eeff9db1f7fd199c36f21a2e63c6a667f81d23d"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/tests/data/aes256.blb",
+      "sourceBlob": "2fa2e3ae991075e9f02b014c4a732b99583ff107",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/tests/data/aes256.blb",
+      "sha256": "28c4f1e84e188645a59077f1304816d18ff1115f974a46eea19ab76a26ef467e"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/tests/hazmat.rs",
+      "sourceBlob": "ce0e8f8261b5d40ce58241d0f0c0f36b60b920ba",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/tests/hazmat.rs",
+      "sha256": "c74cc6eb51f1064222206e9ae7a21fafc9188dd3ba3d3cde7aeb4f9e388cd1ce"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "third_party/rustcrypto-aes-0.8.4/tests/mod.rs",
+      "sourceBlob": "4164e4f26a41d521f66b5d1048aea11d9883211b",
+      "destinationPath": "third_party/rustcrypto-aes-0.8.4/tests/mod.rs",
+      "sha256": "33a9de6d44d892e24c6fdd58b584d1d7f625adefce065a2c4134095177d3d723"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/CONTRIBUTING-DEVICE-QUALIFICATION.md",
+      "sourceBlob": "82b01552734cf3df7a5a148325191c7cf6e834dc",
+      "destinationPath": "tools/qualification/notebook-core-v2/CONTRIBUTING-DEVICE-QUALIFICATION.md",
+      "sha256": "cdb74c7bdbe0fd70b1e59d372f4f54b1a0d42a3edf2745b16ae348259008c8a1"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/DEPENDENCIES.md",
+      "sourceBlob": "a646a2cb98d15cb9f6bf3f010543d2c6522ead3c",
+      "destinationPath": "tools/qualification/notebook-core-v2/DEPENDENCIES.md",
+      "sha256": "b8799613ac0f1215b6bd21f42f61a2f792cace94e5b9e49c04d9075181364901"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/README.md",
+      "sourceBlob": "0f2474760c25bb4b2606e54f1cd52d1ea3c697e0",
+      "destinationPath": "tools/qualification/notebook-core-v2/README.md",
+      "sha256": "ee3999440237ab4caf83e5488f2ee43de4e75cf8d5baf2e0ccd42b13caad89c5"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/benchmark-worker.ts",
+      "sourceBlob": "0b04900584b6c2bf03692089018bc2280a5a9164",
+      "destinationPath": "tools/qualification/notebook-core-v2/benchmark-worker.ts",
+      "sha256": "4283d1fb9a246d1bb1c0cbd751163aabd8d6c334ada95ea60959cd84e0860734"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/browser-rss.test.ts",
+      "sourceBlob": "47270540fe791f18acf9a2dc0198a8f49b07a959",
+      "destinationPath": "tools/qualification/notebook-core-v2/browser-rss.test.ts",
+      "sha256": "822b8c8e4861ff90047472f0f8d75e93562dab75fad0857aabfa52e8a9eed5db"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/browser-rss.ts",
+      "sourceBlob": "b462d069cb78a59ce3e0468167d7cfaba21e8cdc",
+      "destinationPath": "tools/qualification/notebook-core-v2/browser-rss.ts",
+      "sha256": "1ce263219d1db05182538e3863cf68e90255b30e4cb0eaef66385f5636c1d3a5"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/browser.playwright.ts",
+      "sourceBlob": "f774dc09a5ee1a99dd141112e436f8dee4714a6f",
+      "destinationPath": "tools/qualification/notebook-core-v2/browser.playwright.ts",
+      "sha256": "1d3a0e84f43246dfe23ff7f30d0b6e936bac7529e1a8b773232df3b99da2de51"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/build.ts",
+      "sourceBlob": "990cf283120b249d92422fef556aa7722f57af5e",
+      "destinationPath": "tools/qualification/notebook-core-v2/build.ts",
+      "sha256": "511012a9a5c48c33d3f043e67b4d05c112b50bb9bdf06c11fcb9f75f18498fa5"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/check-resource-class.ts",
+      "sourceBlob": "6772fb4985c20d0857045aae133a2408f935201e",
+      "destinationPath": "tools/qualification/notebook-core-v2/check-resource-class.ts",
+      "sha256": "041fddf914ad6574dfc6cdc2df38333b3c2ce6cd5f3f627ae42d556058e9bb44"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/check-toolchain.ts",
+      "sourceBlob": "28faf1fad4f183f91a4c4b684e8a3d0c26a0821c",
+      "destinationPath": "tools/qualification/notebook-core-v2/check-toolchain.ts",
+      "sha256": "48919d15d336ff48e975b620e76f2f5c18fb56a2b2ef904fba53a2ac414fa5f3"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/fault-worker.ts",
+      "sourceBlob": "f7d30f9de82ddf00c0ac66bf890bbbffa2ad1c65",
+      "destinationPath": "tools/qualification/notebook-core-v2/fault-worker.ts",
+      "sha256": "08f2bfddcd1b2545ec9eb76c1ef695f5f46b5f7919a8e8760ed5ecb9ef836a36"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/faults.playwright.ts",
+      "sourceBlob": "8eb35433fa22b1554bc4b8da662792529d491eb3",
+      "destinationPath": "tools/qualification/notebook-core-v2/faults.playwright.ts",
+      "sha256": "3e38a5fe2d61f45d57f1ca963b575fb097f39fb4caaba9d3bcd2d8f08a8ead6a"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/host.test.ts",
+      "sourceBlob": "f66ba13e5ce0cacb8ae128a8a95f2f0f87dd5346",
+      "destinationPath": "tools/qualification/notebook-core-v2/host.test.ts",
+      "sha256": "d75054a11d2d6bb7242a5a9977c119e95c3bc1261886f567e6b3857ad1481570"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/host.ts",
+      "sourceBlob": "fb06f55866043de108baca883ce78095fb06def0",
+      "destinationPath": "tools/qualification/notebook-core-v2/host.ts",
+      "sha256": "755b34c812f8185246b91f09f3d61c0ce232774540862c9f6214b3c953eaa305"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/isolated-host.test.ts",
+      "sourceBlob": "8b719ac7cd12586f906eb651bf7a803fab35a648",
+      "destinationPath": "tools/qualification/notebook-core-v2/isolated-host.test.ts",
+      "sha256": "2cd7860f453532e5ac64620836cd37325e3beddb277807f1e9e14f08e23c118b"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/isolated-host.ts",
+      "sourceBlob": "4eadc8a82d827b8680bdd15ecbd0d5dae37f9f2d",
+      "destinationPath": "tools/qualification/notebook-core-v2/isolated-host.ts",
+      "sha256": "72f79b77ec3b448085fa649ffc125b8f3a1ca0df0c65e1fb391ef05611a5002b"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/performance.config.ts",
+      "sourceBlob": "90a6353d345af53ab4fcb95424b1b423ae12f680",
+      "destinationPath": "tools/qualification/notebook-core-v2/performance.config.ts",
+      "sha256": "f4dcdf0d1b6b36f621b0a6437a53b8f7344ac07b117588b231967b5aae96109b"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/performance.global-setup.ts",
+      "sourceBlob": "0b69edcd2eea76c106eeb194da05f384308a70f2",
+      "destinationPath": "tools/qualification/notebook-core-v2/performance.global-setup.ts",
+      "sha256": "69ae721c2c36059fa7728beb5b9e5cbde37cc53f502dcea377cd3865b4a341a0"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/performance.playwright.ts",
+      "sourceBlob": "e1eb271c31b68a8dbaea0bbec70ee7715cfc9e90",
+      "destinationPath": "tools/qualification/notebook-core-v2/performance.playwright.ts",
+      "sha256": "e208584a305c7ed720cefd3d6b8234526ac17021ec7b651e2195930a3da6f740"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/playwright.config.ts",
+      "sourceBlob": "aa84e691908f0b0447a71979d428cddd44ca5c5a",
+      "destinationPath": "tools/qualification/notebook-core-v2/playwright.config.ts",
+      "sha256": "76bd1b985fa16e83155d61d55636cc5b029c609955c2e19928236b2444825ee7"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/product-host-faults.config.ts",
+      "sourceBlob": "d6cd68da9a58316f56d2fc8291fd1cf7eb097dc2",
+      "destinationPath": "tools/qualification/notebook-core-v2/product-host-faults.config.ts",
+      "sha256": "04d9fb5754f1f2984ea2fc36f1a067d5db667c5212593420190fa4d793b4d1e4"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/product-host-faults.playwright.ts",
+      "sourceBlob": "2c37ee557eef3efb10374894bb6632cd9fcb64b8",
+      "destinationPath": "tools/qualification/notebook-core-v2/product-host-faults.playwright.ts",
+      "sha256": "6bbaf2662d5df37e4903a2fa06d437465570dbf4269f4136aec8cdd94dba66d4"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/product-host-storage.config.ts",
+      "sourceBlob": "8d2089e264b4a6b7a16140b5e7a39cb0840725be",
+      "destinationPath": "tools/qualification/notebook-core-v2/product-host-storage.config.ts",
+      "sha256": "cf383d7992b82ea904e22b3507d0377826d29be901ceb5db3fa98044d6a84026"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/product-host-storage.global-setup.ts",
+      "sourceBlob": "dd4693248c9a27ed9f77c1f9b1b3f483f6134659",
+      "destinationPath": "tools/qualification/notebook-core-v2/product-host-storage.global-setup.ts",
+      "sha256": "ac926ed07ec7ca5f0688293b06d46cb716abecd2c3ae7aae6f0ccbf9936a9673"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/product-host-storage.global-teardown.ts",
+      "sourceBlob": "fbdf994427c2e1c7ad98c2e60c5370343f975c61",
+      "destinationPath": "tools/qualification/notebook-core-v2/product-host-storage.global-teardown.ts",
+      "sha256": "79d864f7a750743575dc0a98c48e10d02dfe1c49486ba9455b9dca85e1f137db"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/product-host-storage.playwright.ts",
+      "sourceBlob": "59a456485e9012261b0c7b7a2c64c9c63dee03c0",
+      "destinationPath": "tools/qualification/notebook-core-v2/product-host-storage.playwright.ts",
+      "sha256": "665bd2dc7b9bc89c2939fd9cdd850db01490e1468b29dbf27ec33eb2f0547b14"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/product-host-storage.runtime.ts",
+      "sourceBlob": "68a92e6de8fe95bd54b0d833a6f4a2c1d4db4cdc",
+      "destinationPath": "tools/qualification/notebook-core-v2/product-host-storage.runtime.ts",
+      "sha256": "61fa74f7bf49a88123cc097a58273229e9431e6aa31bbe5de4b16bed62e5a005"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/resource-class.test.ts",
+      "sourceBlob": "af69c6687a5e9f40826fba902aaa1075dce9e972",
+      "destinationPath": "tools/qualification/notebook-core-v2/resource-class.test.ts",
+      "sha256": "c576214fbe3b6a68ce24871b0d93242b370b7e7523253de1709236b4d08fe49f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/resource-class.ts",
+      "sourceBlob": "4f0bb229107a13eadb3cc587569cd9566ee27bb6",
+      "destinationPath": "tools/qualification/notebook-core-v2/resource-class.ts",
+      "sha256": "6ff86b4fe8d093fa6cffab731f8c909c64fe711c0eb0dd9a25b7579ac5a85156"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/serve.ts",
+      "sourceBlob": "c9bd30bbf9b139dc8f4c8c2917e7fe0090cdaa16",
+      "destinationPath": "tools/qualification/notebook-core-v2/serve.ts",
+      "sha256": "fdbb2ac321085f24dd36e9c5b999bb3c9dd6f71564b5f268a5ff96cc42a93e19"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tools/qualification/notebook-core-v2/summarize-performance.ts",
+      "sourceBlob": "24e94f4889505ca26fb59e2373d902806bf15bf2",
+      "destinationPath": "tools/qualification/notebook-core-v2/summarize-performance.ts",
+      "sha256": "14ed7de06a11d4783222804a3a0e8d3300fec3dc4b9057b313a80f40d85c1eb2"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "tsconfig.json",
+      "sourceBlob": "688ebb97839198d530ca3bc57d5f9bdbc34a8e93",
+      "destinationPath": "tsconfig.json",
+      "sha256": "1dc2950c978dcdca33cace5186abaad564227d457444f48ca1d2859817cfc61f"
+    },
+    {
+      "sourceRepository": "notebook",
+      "sourceCommit": "03e1f0e2ee4cb6148365d36a24dddd08648714c1",
+      "sourcePath": "vendored/wit/notebook-core-v2/world.wit",
+      "sourceBlob": "9e7858e25a1c50d3ac95c9d9be5fad8c0713da0d",
+      "destinationPath": "vendored/wit/notebook-core-v2/world.wit",
+      "sha256": "132d4cec0116352c8cea2c356b6dd6638758e07c7e182dc01042ea5667daa295"
+    }
+  ],
+  "excluded": [
+    {
+      "source": "notebook",
+      "path": ".github/CODEOWNERS",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": ".github/ISSUE_TEMPLATE/design_discussion.md",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": ".github/ISSUE_TEMPLATE/docs_issue.md",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": ".github/ISSUE_TEMPLATE/fixture_request.md",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": ".github/assets/repository-card.svg",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": ".github/dependabot.yml",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": ".github/workflows/ci.yml",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": ".github/workflows/context-hygiene.yml",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": "AGENTS.md",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": "CLAUDE.md",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": "README.fr.md",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": "README.md",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    },
+    {
+      "source": "notebook",
+      "path": "project.v1.yaml",
+      "reason": "preserve current presentation and avoid activating historical agent/provider configuration"
+    }
+  ],
+  "status": "Source imported and locally tested; no publication or deployment performed.",
+  "additionalInputs": [
+    {
+      "sourceRepository": "project-governance",
+      "sourcePath": "toolchains/notebook-qualification.json",
+      "destinationPath": "toolchains/notebook-qualification.json",
+      "sha256": "38a17615f5c8a0baf5e0a9fd747ff165a5e2e31f34a73f568a859f64143fde40"
+    }
+  ],
+  "adaptations": [
+    {
+      "path": ".gitignore",
+      "sourceSha256": "19b23de57a80020117177f6f3a34b5b5ce98c2623a8e8e6e211453bbf6458bfa",
+      "currentSha256": "8a2de8b3e4d25c532fd89bd03eb95e9f1c09e8876abf2a54abfa7f74aa04db9c",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    },
+    {
+      "path": "REUSE.toml",
+      "sourceSha256": "ac2eb685d304c1281832160dd7259b3669d9f79feb99e78f9d5697f90eb657c2",
+      "currentSha256": "bbb2f7023b47ac40e86935636b5dd894c1f213042b5c904b0dd10c2f678c18ee",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    },
+    {
+      "path": "apps/notebook/e2e/backup-host.e2e.ts",
+      "sourceSha256": "4f982eeaa11415f0e0d6751e6b877c0e8ea4dc411a11ee894b523bad2af643c3",
+      "currentSha256": "5f0071c0e8d8560fb078b948b390da6413cdcb3e3fa653b5b6545989ae0f3472",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    },
+    {
+      "path": "apps/notebook/package.json",
+      "sourceSha256": "66ee67c418ff8260dcf76051acd830e8d49c36ef3e86cdff4e267102252d0e42",
+      "currentSha256": "1526806a7d40aab0177ea1b4042dfd9411545282833f85c6d9b46af3b78dcc08",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    },
+    {
+      "path": "apps/notebook/scripts/build.ts",
+      "sourceSha256": "9031c235d0e238db7534ea78723220afbfdc43c31cb9b5df3ea02dfa33642b5b",
+      "currentSha256": "16489b1c4470a4e8401552c791ffad10f68809e2ad0b62ecb4526e811e786145",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    },
+    {
+      "path": "apps/notebook/src/server/handler.ts",
+      "sourceSha256": "90e7b259074632d76046a9ae77edcf3ebb691471ef0ab631f62e01cb5b3aa3fb",
+      "currentSha256": "8d6e7bcd0ec87cbc4184972880568189fe2320d6bd0e9cfd10daf61472925064",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    },
+    {
+      "path": "bun.lock",
+      "sourceSha256": "2465bc5a51002efbfedc97cd7f20a3dd140c30bd8944ede2a7067658e1384f54",
+      "currentSha256": "09dda5c2d0b805d2798c61a1fa072fff7786d41306b900d01b204cf66ad4d72a",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    },
+    {
+      "path": "package.json",
+      "sourceSha256": "9ef504161f05009fa2d340436982cbc3ec3820bcee6efc90756322afa39b303f",
+      "currentSha256": "7f68a076621800d0be94697b4ead5aa2dc99d21ed081c7819287e769a05aefde",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    },
+    {
+      "path": "tools/qualification/notebook-core-v2/build.ts",
+      "sourceSha256": "511012a9a5c48c33d3f043e67b4d05c112b50bb9bdf06c11fcb9f75f18498fa5",
+      "currentSha256": "41d083a7bfb1ffbbf02a08c61c63def5c2d739b6bf0b4e959c3285e7fe8de7fd",
+      "change": "Local composition, build/test adaptation or current presentation; original source remains preserved."
+    }
+  ]
+}

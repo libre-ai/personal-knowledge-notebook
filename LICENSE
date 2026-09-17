@@ -1,0 +1,21 @@
+This repository is the reserved product home of Libre AI Notebook. It contains
+no application and no product runtime code: active development happens in the
+canonical base repository, and what lives here is the product brief, the
+roadmap, the governance files and the forge configuration.
+
+The licence for each file is declared through REUSE.toml:
+
+- CC-BY-4.0: the bilingual README, the roadmap, the security and contribution
+  policies and the readiness records under `docs/` — editorial documentation and
+  first-party project records;
+- EUPL-1.2: the files under `.github/` and `.gitignore`, first-party software by
+  default.
+
+Full licence texts are stored in LICENSES/.
+
+The organization-wide licensing policy — scope, precedence, historical grants,
+data and contribution rules — is the canonical one and is not restated here:
+https://github.com/libre-ai/libre-ai/blob/main/LICENSING.md
+
+Historical revisions previously published under MIT remain available under those
+terms. No previous licence grant is withdrawn.

@@ -1,0 +1,44 @@
+version = 1
+
+# This repository carries no application and no product runtime code: the
+# product boundary, the roadmap, the security and contribution policies and the
+# readiness records are editorial documentation and first-party project records.
+# Annotations follow the canonical policy in libre-ai/libre-ai/LICENSING.md;
+# the last matching annotation wins within this file.
+[[annotations]]
+path = ["*.md", "**/*.md", "docs/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Libre AI contributors"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# First-party software by default, matching the canonical `.github/**`
+# annotation. This deliberately also covers the issue templates and the
+# repository card: they are forge inputs, not editorial documents.
+[[annotations]]
+path = [".github/**", ".gitignore"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Libre AI contributors"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Grafted hub content and workspace bootstrap (ADR-0020, γ 3.5): EUPL-1.2
+# like the product, SPDX headers on authored sources take precedence.
+[[annotations]]
+path = ["**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Libre AI contributors"
+SPDX-License-Identifier = "EUPL-1.2"
+
+# Audited third-party aes fork keeps its upstream licences (LICENSING.md).
+[[annotations]]
+path = ["third_party/rustcrypto-aes-0.8.4/**"]
+precedence = "override"
+SPDX-FileCopyrightText = "RustCrypto Developers"
+SPDX-License-Identifier = "LicenseRef-ThirdParty-Notices"
+
+# Documentation keeps the frozen-home CC-BY-4.0 grant (re-declared after
+# the graft catch-all so it keeps precedence in every reuse version).
+[[annotations]]
+path = ["*.md", "**/*.md", "docs/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Libre AI contributors"
+SPDX-License-Identifier = "CC-BY-4.0"

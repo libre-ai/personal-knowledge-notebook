@@ -1,0 +1,6 @@
+Third-party notice material
+
+The covered file is reproduced solely as licensing, attribution, provenance, or
+redistribution evidence for third-party software. Libre AI does not grant any
+additional rights in that material. Copyright and licence terms are those
+identified in the covered file and in the corresponding upstream distribution.

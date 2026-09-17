@@ -13,6 +13,6 @@ Capture your notes, organize them and find useful information again while choosi
 - Find information in your collection without having to remember where you put it.
 - Export a chosen selection and understand what a backup would allow you to recover.
 
-**Today:** this repository documents the proposed product; no usable application is available here yet.
+**Today:** source code and tests are present; local integration is underway. See the [development guide](docs/DEVELOPMENT.md) for setup and verification status.
 
 [Catalogue](https://github.com/libre-ai/.github/blob/main/profile/README.md) · [Contribute](https://github.com/libre-ai/.github/blob/main/CONTRIBUTING.md) · [Français](README.fr.md) · [CC BY 4.0 license](LICENSES/CC-BY-4.0.txt)

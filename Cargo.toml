@@ -1,0 +1,32 @@
+[workspace]
+members = ["crates/notebook-core"]
+resolver = "2"
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.97"
+license = "EUPL-1.2"
+repository = "https://github.com/libre-ai/notebook"
+
+[workspace.dependencies]
+aes = { version = "=0.8.4", default-features = false, features = ["zeroize"] }
+aes-gcm = { version = "=0.10.3", default-features = false, features = ["aes", "zeroize"] }
+argon2 = { version = "=0.6.0", default-features = false, features = ["zeroize"] }
+base64 = { version = "=0.22.1", default-features = false, features = ["alloc"] }
+ghash = { version = "=0.5.1", default-features = false, features = ["zeroize"] }
+polyval = { version = "=0.6.2", default-features = false, features = ["zeroize"] }
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_jcs = "=0.2.0"
+serde_json = { version = "=1.0.151", features = ["float_roundtrip"] }
+sha2 = { version = "=0.11.0", default-features = false }
+subtle = { version = "=2.6.1", default-features = false }
+wasmparser = "=0.253.0"
+wit-bindgen = { version = "=0.61.1", default-features = false, features = ["macros", "realloc"] }
+wit-component = "=0.253.0"
+zeroize = { version = "=1.9.0", features = ["zeroize_derive"] }
+
+# Audited aes fork (constant-time hardening) re-declared by this workspace:
+# applies to the whole graph, .cargo/config.toml pins the wasm32 target
+# (design §5.2.4 — the patch travelled with its consumer).
+[patch.crates-io]
+aes = { path = "third_party/rustcrypto-aes-0.8.4" }

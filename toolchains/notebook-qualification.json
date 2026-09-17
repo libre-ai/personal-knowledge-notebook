@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "libre-ai.notebook-qualification-toolchain.v1",
+  "observedAt": "2026-07-17",
+  "node": {
+    "version": "26.5.0",
+    "license": "MIT",
+    "checksumsUrl": "https://nodejs.org/dist/v26.5.0/SHASUMS256.txt",
+    "platforms": {
+      "darwin-arm64": {
+        "archiveName": "node-v26.5.0-darwin-arm64.tar.xz",
+        "archiveUrl": "https://nodejs.org/dist/v26.5.0/node-v26.5.0-darwin-arm64.tar.xz",
+        "archiveSha256": "48231d6204eca6be13e6c5184dfdffa1d64ad88880364cc2cfb198f872cb2b13",
+        "executableRelativePath": "bin/node",
+        "executableSha256": "cbee2298aee5cc476bf8d5441e7348b627254a39d869743a5b04489028c729d4"
+      },
+      "linux-x64": {
+        "archiveName": "node-v26.5.0-linux-x64.tar.xz",
+        "archiveUrl": "https://nodejs.org/dist/v26.5.0/node-v26.5.0-linux-x64.tar.xz",
+        "archiveSha256": "9f619528f1db5ddc41dccf54211066fb42228d69a156733c69cb9d6cc92e358c",
+        "executableRelativePath": "bin/node",
+        "executableSha256": "3de740a941a630439b22b79aafb383f4912b76354a2694765e8d59a033746538"
+      }
+    }
+  },
+  "playwright": {
+    "version": "1.61.1",
+    "browsersJsonSha256": "ee39bc924bc3d1bd895626c2910f1292d109bbfeeb5abd113acb45e1951cc942",
+    "evidencePlatform": "darwin-arm64",
+    "engines": {
+      "chromium": {
+        "descriptor": "chromium-headless-shell",
+        "revision": "1228",
+        "browserVersion": "149.0.7827.55",
+        "cacheDirectory": "chromium_headless_shell-1228",
+        "archiveName": "chrome-headless-shell-mac-arm64-149.0.7827.55.zip",
+        "archiveUrl": "https://cdn.playwright.dev/builds/cft/149.0.7827.55/mac-arm64/chrome-headless-shell-mac-arm64.zip",
+        "archiveSha256": "302f82603be06683947594ecd60f849e362a8fe3dd82a89bd4408477c97e75a6",
+        "executables": [
+          {
+            "path": "chrome-headless-shell-mac-arm64/chrome-headless-shell",
+            "sha256": "11e393326c7d20a7c56641a7c65def33ea9c280da3b0b74cf8563b07989a0ee3"
+          }
+        ]
+      },
+      "firefox": {
+        "descriptor": "firefox",
+        "revision": "1532",
+        "browserVersion": "151.0",
+        "cacheDirectory": "firefox-1532",
+        "archiveName": "firefox-mac-arm64-1532.zip",
+        "archiveUrl": "https://cdn.playwright.dev/dbazure/download/playwright/builds/firefox/1532/firefox-mac-arm64.zip",
+        "archiveSha256": "7372a999fe4793e62ca7f6fd65fa4b214b89d1e006e988ef156b8e1ef3bc6745",
+        "executables": [
+          {
+            "path": "firefox/Nightly.app/Contents/MacOS/firefox",
+            "sha256": "cc46f4ac861dbeef56bf718d9e3a54c3c5f9e7365270b19a771db20132d0cb1b"
+          },
+          {
+            "path": "firefox/Nightly.app/Contents/MacOS/XUL",
+            "sha256": "d365c80130fddee75f4dea7701c64635023944d5f202d5094fe55d598a3979f5"
+          }
+        ]
+      },
+      "webkit": {
+        "descriptor": "webkit",
+        "revision": "2311",
+        "browserVersion": "26.5",
+        "cacheDirectory": "webkit-2311",
+        "archiveName": "webkit-mac-15-arm64-2311.zip",
+        "archiveUrl": "https://cdn.playwright.dev/dbazure/download/playwright/builds/webkit/2311/webkit-mac-15-arm64.zip",
+        "archiveSha256": "a029455b79e20f218992899b87cb59dde6f775c89d79f98ead423698cba08f9b",
+        "executables": [
+          {
+            "path": "pw_run.sh",
+            "sha256": "a85baad3d8c07173ac387a59b41500c382b21ed692afe0964d29aac247ccc63b"
+          },
+          {
+            "path": "Playwright.app/Contents/MacOS/Playwright",
+            "sha256": "042c3ee42aab538dfcd440892286af0d5b20707ca3c22765da41d1cc6464f762"
+          },
+          {
+            "path": "WebKit.framework/Versions/A/WebKit",
+            "sha256": "ac2ff2cd9bb823ce6d7fbeb1ffe16f6a25cce5bb47dd65248a21eea8039889ad"
+          }
+        ]
+      }
+    }
+  },
+  "policy": "Qualification-only public-fixture toolchain. Archive downloads are checksum-verified before evidence capture; no runtime or user data is sent to these sources."
+}

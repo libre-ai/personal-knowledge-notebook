@@ -1,0 +1,19 @@
+--- aes-0.8.4/src/soft.rs
++++ third_party/rustcrypto-aes-0.8.4/src/soft.rs
+@@ -8,8 +8,14 @@
+
+ #![deny(unsafe_code)]
+
+-#[cfg_attr(not(target_pointer_width = "64"), path = "soft/fixslice32.rs")]
+-#[cfg_attr(target_pointer_width = "64", path = "soft/fixslice64.rs")]
++#[cfg_attr(
++    all(not(target_pointer_width = "64"), not(target_arch = "wasm32")),
++    path = "soft/fixslice32.rs"
++)]
++#[cfg_attr(
++    any(target_pointer_width = "64", target_arch = "wasm32"),
++    path = "soft/fixslice64.rs"
++)]
+ pub(crate) mod fixslice;
+
+ use crate::Block;
