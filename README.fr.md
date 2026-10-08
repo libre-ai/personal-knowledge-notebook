@@ -2,7 +2,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Written for the retained Libre AI portfolio on 2026-09-14; earlier source documents and revisions retain their original licensing. -->
 
-# Libre AI Personal Knowledge Notebook
+# Libre AI Knowledge Workspace
 
 Saisir vos notes, les organiser et retrouver une information utile, tout en choisissant ce que vous partagez. Ce produit vise les personnes qui veulent organiser leurs connaissances et garder la maîtrise de leurs notes et exports.
 

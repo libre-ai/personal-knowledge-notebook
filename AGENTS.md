@@ -1,8 +1,8 @@
-# personal-knowledge-notebook Canonical Agent Rules
+# personal-knowledge-workspace Canonical Agent Rules
 
 ## Purpose
 
-Reserved couche-1 product home for Libre AI Personal Knowledge Notebook:
+Reserved couche-1 product home for Libre AI Knowledge Workspace:
 capture, organize and find notes again while choosing deliberately what is
 shared or exported.
 Doctrine lives upstream: https://raw.githubusercontent.com/libre-ai/project-governance/HEAD/AGENTS.md
