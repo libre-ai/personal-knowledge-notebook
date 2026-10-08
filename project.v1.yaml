@@ -1,6 +1,6 @@
 schema_version: "libre-ai.project.v1"
-project: "personal-knowledge-notebook"
-repository: "libre-ai/personal-knowledge-notebook"
+project: "personal-knowledge-workspace"
+repository: "libre-ai/personal-knowledge-workspace"
 kind: "product"
 layer: "couche-1"
 statement:
@@ -11,7 +11,7 @@ statement:
     - "reproducible qualification evidence for the intended scope"
   without_depending_on:
     - "an implicit transfer of historical authority or an assumed passing CI run"
-summary: "personal-knowledge-notebook: recovered sources with documentary integration under review."
+summary: "personal-knowledge-workspace: recovered sources with documentary integration under review."
 current_situation: "Recovered source snapshot c81ad3426f4118fa7c5e4ffe3f16374e54ff3491 is present. Product tests and CI were not rerun for this documentary integration; historical evidence is not qualification of this tree. No product admission or authority transfer is established. Historical responsibilities came from the former libre-ai/notebook repository, which is no longer present in the organization."
 scope:
   - "Write and revise notes as your understanding develops."
