@@ -11,6 +11,7 @@
 
 use std::collections::HashMap;
 use std::net::{IpAddr, SocketAddr};
+use std::pin::Pin;
 use std::sync::{Arc, Mutex, PoisonError};
 
 use bytes::Bytes;
@@ -33,6 +34,7 @@ use url::Url;
 
 use crate::body::{coding_of, read_bounded};
 use crate::error::{FetchError, SetupError};
+use crate::gauge::{ConnectionGauge, CountedStream};
 use crate::limits::{
     BodyKind, FetchLimits, GLOBAL_CONCURRENCY, MAX_RESPONSE_HEAD_BYTES, PER_HOST_CONCURRENCY,
 };
@@ -114,6 +116,7 @@ pub struct SafeFetcher {
     limits: FetchLimits,
     global: Arc<Semaphore>,
     hosts: Mutex<HashMap<String, Arc<Semaphore>>>,
+    connections: Arc<ConnectionGauge>,
 }
 
 impl SafeFetcher {
@@ -160,6 +163,7 @@ impl SafeFetcher {
             limits: config.limits,
             global: Arc::new(Semaphore::new(GLOBAL_CONCURRENCY)),
             hosts: Mutex::new(HashMap::new()),
+            connections: Arc::new(ConnectionGauge::default()),
         })
     }
 
@@ -245,20 +249,26 @@ impl SafeFetcher {
         &self,
         target: &FetchTarget,
         validators: &[(http::HeaderName, HeaderValue)],
-    ) -> Result<Hop<'_>, FetchError> {
+    ) -> Result<Hop, FetchError> {
         let host_key = match target.host() {
             TargetHost::Ip(ip) => ip.to_string(),
             TargetHost::Domain(name) => name.clone(),
         };
         // Host slot first, global slot second: a fetch queued behind a busy
         // host must not hold one of the global slots other hosts could use.
-        let permit = self.host_permit(&host_key).await?;
+        let host = self.host_permit(&host_key).await?;
         let global = self
             .global
             .clone()
             .acquire_owned()
             .await
             .map_err(|_| FetchError::Unavailable)?;
+        // Declared before the stream: on an early return the stream is
+        // dropped (socket closed) first, the slots second.
+        let slots = Slots {
+            _host: host,
+            _global: global,
+        };
         let addresses = match target.host() {
             TargetHost::Ip(ip) => vec![*ip],
             TargetHost::Domain(name) => {
@@ -284,7 +294,7 @@ impl SafeFetcher {
         };
         let request = build_request(target, &self.user_agent, validators)?;
         let response = match target.scheme() {
-            Scheme::Http => send(TokioIo::new(stream), request).await?,
+            Scheme::Http => send(TokioIo::new(stream), request, slots).await?,
             Scheme::Https => {
                 let server_name = match target.host() {
                     TargetHost::Ip(ip) => ServerName::IpAddress((*ip).into()),
@@ -299,24 +309,18 @@ impl SafeFetcher {
                     Ok(Err(_)) => return Err(FetchError::TlsFailed),
                     Err(_) => return Err(FetchError::ConnectTimeout),
                 };
-                send(TokioIo::new(tls), request).await?
+                send(TokioIo::new(tls), request, slots).await?
             }
         };
         Ok(Hop {
             response: response.0,
             _connection: response.1,
-            _global: global,
-            _permit: HostPermit {
-                permit: Some(permit),
-                key: host_key,
-                fetcher: self,
-            },
         })
     }
 
     /// The only place a socket is opened. `addresses` were validated by the
     /// policy; the connected peer is checked again before any byte is sent.
-    async fn dial(&self, addresses: &[IpAddr], port: u16) -> Result<TcpStream, FetchError> {
+    async fn dial(&self, addresses: &[IpAddr], port: u16) -> Result<CountedStream, FetchError> {
         for &address in addresses {
             if !self.policy.allows_address(address) {
                 return Err(FetchError::DestinationForbidden);
@@ -329,7 +333,7 @@ impl SafeFetcher {
                 return Err(FetchError::DestinationForbidden);
             }
             let _ = stream.set_nodelay(true);
-            return Ok(stream);
+            return Ok(CountedStream::new(stream, self.connections.clone()));
         }
         Err(FetchError::ConnectFailed)
     }
@@ -337,6 +341,11 @@ impl SafeFetcher {
     async fn host_permit(&self, key: &str) -> Result<OwnedSemaphorePermit, FetchError> {
         let semaphore = {
             let mut hosts = self.hosts.lock().unwrap_or_else(PoisonError::into_inner);
+            // Drop the entries nobody holds or waits on, so the map stays
+            // bounded by the hosts in flight. A slot is held by a live
+            // connection task, so an entry is idle only once its sockets are
+            // closed.
+            hosts.retain(|_, semaphore| Arc::strong_count(semaphore) > 1);
             hosts
                 .entry(key.to_owned())
                 .or_insert_with(|| Arc::new(Semaphore::new(PER_HOST_CONCURRENCY)))
@@ -348,38 +357,23 @@ impl SafeFetcher {
             .map_err(|_| FetchError::Unavailable)
     }
 
-    fn release_host(&self, key: &str) {
-        let mut hosts = self.hosts.lock().unwrap_or_else(PoisonError::into_inner);
-        // Drop the entry once nobody holds or waits on it, so the map stays
-        // bounded by the hosts in flight.
-        if hosts
-            .get(key)
-            .is_some_and(|semaphore| Arc::strong_count(semaphore) == 1)
-        {
-            hosts.remove(key);
-        }
+    /// Sockets this fetcher holds open now, and the most it ever held open
+    /// at once (counted at the dial, for observability and bound checks).
+    pub fn connection_counts(&self) -> (usize, usize) {
+        (self.connections.open(), self.connections.peak())
     }
 }
 
-/// A connection in use: its response, the task driving it and the host slot.
-struct Hop<'a> {
+/// The host and global concurrency slots of one connection.
+struct Slots {
+    _host: OwnedSemaphorePermit,
+    _global: OwnedSemaphorePermit,
+}
+
+/// A connection in use: its response and the task driving it.
+struct Hop {
     response: http::Response<Incoming>,
     _connection: ConnectionTask,
-    _global: OwnedSemaphorePermit,
-    _permit: HostPermit<'a>,
-}
-
-struct HostPermit<'a> {
-    permit: Option<OwnedSemaphorePermit>,
-    key: String,
-    fetcher: &'a SafeFetcher,
-}
-
-impl Drop for HostPermit<'_> {
-    fn drop(&mut self) {
-        drop(self.permit.take());
-        self.fetcher.release_host(&self.key);
-    }
 }
 
 /// Aborts the connection driver when the hop is dropped, so a refused or
@@ -392,9 +386,20 @@ impl Drop for ConnectionTask {
     }
 }
 
+/// What the connection task owns. Fields drop in declaration order: the
+/// connection (and with it the socket) first, the concurrency slots after.
+/// A slot is therefore free only once its socket is closed, whether the
+/// connection ended on its own or its task was aborted: the per-host and
+/// global bounds count sockets, not requests in flight.
+struct Driver<C> {
+    connection: Pin<Box<C>>,
+    _slots: Slots,
+}
+
 async fn send<I>(
     io: TokioIo<I>,
     request: Request<Empty<Bytes>>,
+    slots: Slots,
 ) -> Result<(http::Response<Incoming>, ConnectionTask), FetchError>
 where
     I: AsyncRead + AsyncWrite + Unpin + Send + 'static,
@@ -404,8 +409,19 @@ where
         .handshake(io)
         .await
         .map_err(|_| FetchError::HttpProtocol)?;
+    let driver = Driver {
+        connection: Box::pin(connection),
+        _slots: slots,
+    };
     let task = ConnectionTask(tokio::spawn(async move {
-        let _ = connection.await;
+        // Bind the whole driver: an async block that only named
+        // `driver.connection` would capture that field alone (disjoint
+        // capture) and leave the slots to drop when `send` returns, before
+        // the socket closes.
+        let mut driver = driver;
+        let _ = driver.connection.as_mut().await;
+        // `driver` drops here, or wherever the task is cancelled: connection
+        // first, slots second.
     }));
     let response = sender
         .send_request(request)

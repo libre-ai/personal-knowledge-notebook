@@ -481,7 +481,13 @@ async fn at_most_two_connections_per_host_are_open_at_once() {
         assert!(task.await.unwrap().is_ok());
     }
     assert_eq!(server.connections(), 6);
-    assert_eq!(server.peak_concurrency(), 2);
+    let (_, peak) = fetcher.connection_counts();
+    assert_eq!(
+        peak,
+        2,
+        "sockets the fetcher held open at once (server saw {})",
+        server.peak_concurrency()
+    );
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 8)]
@@ -508,7 +514,13 @@ async fn at_most_sixteen_fetches_run_at_once_across_hosts() {
         assert!(task.await.unwrap().is_ok());
     }
     assert_eq!(server.connections(), 24);
-    assert_eq!(server.peak_concurrency(), 16);
+    let (_, peak) = fetcher.connection_counts();
+    assert_eq!(
+        peak,
+        16,
+        "sockets the fetcher held open at once (server saw {})",
+        server.peak_concurrency()
+    );
 }
 
 #[tokio::test]
@@ -755,4 +767,40 @@ async fn a_closed_port_is_a_connect_failure() {
         .fetch(&get(format!("http://127.0.0.1:{port}/")))
         .await;
     assert_eq!(result, Err(FetchError::ConnectFailed));
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn the_per_host_bound_holds_when_fetches_abandon_their_connection_early() {
+    // Each fetch stops reading past its 1 KiB bound while the origin still
+    // sends: the abandoned socket must be closed before its slot is reused.
+    let big = response("200 OK", &[], &vec![b'x'; 4 * 1024 * 1024]);
+    let server = FixtureServer::bind("127.0.0.1:0".parse().unwrap(), move |_| {
+        Reply::Raw(big.clone())
+    })
+    .await
+    .unwrap();
+    let port = server.addr().port();
+    let resolver = ScriptedResolver::always(vec![ip("127.0.0.1")]);
+    let limits = FetchLimits::tightened(
+        Duration::from_millis(500),
+        Duration::from_secs(5),
+        3,
+        Some(1024),
+    )
+    .unwrap();
+    let fetcher = Arc::new(fetcher(port, &resolver, limits));
+    let mut tasks = Vec::new();
+    for _ in 0..12 {
+        let fetcher = fetcher.clone();
+        tasks.push(tokio::spawn(async move {
+            fetcher
+                .fetch(&get(format!("http://one-host.test:{port}/")))
+                .await
+        }));
+    }
+    for task in tasks {
+        assert_eq!(task.await.unwrap(), Err(FetchError::BodyTooLarge));
+    }
+    let (_, peak) = fetcher.connection_counts();
+    assert!(peak <= 2, "{peak} sockets open at once for one host");
 }
