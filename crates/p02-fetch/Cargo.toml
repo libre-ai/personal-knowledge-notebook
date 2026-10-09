@@ -1,0 +1,31 @@
+[package]
+name = "p02-fetch"
+version = "0.1.0"
+description = "P02 safe fetcher: destination policy, pinned DNS resolution and bounded HTTP retrieval"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[dependencies]
+bytes.workspace = true
+flate2.workspace = true
+http.workspace = true
+http-body.workspace = true
+http-body-util.workspace = true
+hyper.workspace = true
+hyper-util.workspace = true
+rustls.workspace = true
+rustls-native-certs.workspace = true
+thiserror.workspace = true
+tokio = { workspace = true, features = ["net", "sync", "time", "rt"] }
+tokio-rustls.workspace = true
+url.workspace = true
+
+[dev-dependencies]
+rcgen.workspace = true
+tokio = { workspace = true, features = ["net", "sync", "time", "rt", "macros", "io-util", "rt-multi-thread"] }
+
+[lints]
+workspace = true

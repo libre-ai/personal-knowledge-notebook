@@ -1,5 +1,11 @@
 [workspace]
-members = ["crates/notebook-core"]
+# P02 (information watch) crates share this workspace and its lockfile only:
+# none of them depends on a P04 crate, and P02 owns its own database,
+# migrations and deployables (PRD 12 §3.7, owner decision Y4).
+members = [
+  "crates/notebook-core",
+  "crates/p02-fetch",
+]
 resolver = "2"
 
 [workspace.package]
@@ -25,8 +31,42 @@ wit-bindgen = { version = "=0.61.1", default-features = false, features = ["macr
 wit-component = "=0.253.0"
 zeroize = { version = "=1.9.0", features = ["zeroize_derive"] }
 
+# P02 worker graph. Exact versions, each published at least three days before
+# adoption. The fetcher owns its connector (hyper client connection over a
+# TCP stream it dialled itself) so that no library resolves a host behind its
+# back; rustls uses the ring provider so the graph carries no OpenSSL-licensed
+# aws-lc code, and native roots so it carries no CDLA root bundle.
+bytes = "=1.12.1"
+flate2 = { version = "=1.1.10", default-features = false, features = ["rust_backend"] }
+# Test-only certificate generation for the TLS refusal tests.
+rcgen = { version = "=0.14.10", default-features = false, features = ["crypto", "ring"] }
+http = "=1.5.0"
+http-body = "=1.1.0"
+http-body-util = "=0.1.5"
+hyper = { version = "=1.11.1", default-features = false, features = ["client", "http1"] }
+hyper-util = { version = "=0.1.21", default-features = false, features = ["tokio"] }
+rustls = { version = "=0.23.45", default-features = false, features = ["ring", "std", "tls12"] }
+rustls-native-certs = "=0.8.4"
+thiserror = "=2.0.21"
+tokio = { version = "=1.53.2", default-features = false }
+tokio-rustls = { version = "=0.26.6", default-features = false, features = ["ring", "tls12"] }
+url = "=2.5.8"
+
 # Audited aes fork (constant-time hardening) re-declared by this workspace:
 # applies to the whole graph, .cargo/config.toml pins the wasm32 target
 # (design §5.2.4 — the patch travelled with its consumer).
 [patch.crates-io]
 aes = { path = "third_party/rustcrypto-aes-0.8.4" }
+
+# Opt-in lint floor for the P02 crates (NFR-18): no unwrap, expect or panic in
+# production code; tests opt out locally with an explicit allow.
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+indexing_slicing = "deny"
