@@ -39,12 +39,14 @@
     "check:secret-scan": "bun run check:bun:runtime && bun node_modules/@libre-ai/governance/tools/quality/check-secret-scan.ts",
     "check:personal-data": "bun run check:bun:runtime && bun node_modules/@libre-ai/governance/tools/quality/check-personal-data-boundary.ts",
     "check:no-transmission": "bun run check:bun:runtime && bun node_modules/@libre-ai/governance/tools/quality/check-no-transmission.ts --roots apps/notebook/src --allow apps/notebook/src/backup/notebook-core-worker.ts",
+    "check:p02-api": "bun run check:bun:runtime && bun test --cwd apps/p02-api && bun run --cwd apps/p02-api typecheck",
+    "check:p02-api-boundary": "bun run check:bun:runtime && bun node_modules/@libre-ai/governance/tools/quality/check-no-transmission.ts --roots apps/p02-api/src",
     "check:qualification": "bun run check:bun:runtime && bun test tools/qualification/notebook-core-v2 && bun tools/qualification/notebook-core-v2/check-inputs.ts",
     "typecheck": "bun run check:bun:runtime && tsc --noEmit -p tsconfig.json",
     "lint": "bun run check:bun:runtime && biome ci .",
     "pretest": "bun run check:bun",
     "test": "cargo test --locked",
-    "check": "bun run check:bun && bun run check:toolchain && bun run check:wit && bun run check:app && bun run check:qualification && bun run check:secret-scan && bun run check:personal-data && bun run check:no-transmission && bun run lint",
+    "check": "bun run check:bun && bun run check:toolchain && bun run check:wit && bun run check:app && bun run check:qualification && bun run check:secret-scan && bun run check:personal-data && bun run check:no-transmission && bun run check:p02-api && bun run check:p02-api-boundary && bun run lint",
     "check:component": "bun run check:bun:runtime && node scripts/check-component-encoding.ts",
     "qualify:notebook-core-v2:toolchain": "bun run check:bun:runtime && bun tools/qualification/notebook-core-v2/check-toolchain.ts",
     "qualify:notebook-core-v2:resource-class": "bun run check:bun:runtime && bun tools/qualification/notebook-core-v2/check-resource-class.ts",
@@ -56,6 +58,7 @@
     "diagnose:notebook-core-v2:performance:vm": "bun run check:bun:runtime && NOTEBOOK_QUALIFICATION_EVIDENCE_MODE=vm-diagnostic bun run qualify:notebook-core-v2:performance"
   },
   "workspaces": [
-    "apps/notebook"
+    "apps/notebook",
+    "apps/p02-api"
   ]
 }
