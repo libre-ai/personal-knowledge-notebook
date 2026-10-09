@@ -74,7 +74,7 @@ pub struct DestinationPolicy {
 #[derive(Debug, Clone)]
 struct TestAllowance {
     addresses: Vec<IpAddr>,
-    port: u16,
+    ports: Vec<u16>,
 }
 
 impl DestinationPolicy {
@@ -91,8 +91,14 @@ impl DestinationPolicy {
     /// address keeps the production classification.
     #[cfg(test)]
     pub(crate) fn for_tests(addresses: Vec<IpAddr>, port: u16) -> Self {
+        Self::for_tests_with_ports(addresses, vec![port])
+    }
+
+    /// Test builds only: as [`Self::for_tests`] with several fixture ports.
+    #[cfg(test)]
+    pub(crate) fn for_tests_with_ports(addresses: Vec<IpAddr>, ports: Vec<u16>) -> Self {
         Self {
-            test_allowance: Some(TestAllowance { addresses, port }),
+            test_allowance: Some(TestAllowance { addresses, ports }),
         }
     }
 
@@ -110,7 +116,7 @@ impl DestinationPolicy {
     fn allows_port(&self, scheme: Scheme, port: u16) -> bool {
         #[cfg(test)]
         if let Some(allowance) = &self.test_allowance
-            && allowance.port == port
+            && allowance.ports.contains(&port)
         {
             return true;
         }

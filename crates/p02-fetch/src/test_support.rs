@@ -17,8 +17,9 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::net::{TcpListener, TcpStream};
+use rustls::pki_types::{CertificateDer, PrivateKeyDer, PrivatePkcs8KeyDer};
+use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
+use tokio::net::TcpListener;
 use tokio::task::JoinHandle;
 
 use crate::resolver::{ResolveFuture, Resolver};
@@ -93,7 +94,29 @@ impl FixtureServer {
         Ok(Self::serve(listener, Arc::new(responder)))
     }
 
+    /// A fixture origin speaking TLS with `config`.
+    pub(crate) async fn bind_tls(
+        addr: SocketAddr,
+        config: rustls::ServerConfig,
+        responder: impl Fn(&str) -> Reply + Send + Sync + 'static,
+    ) -> io::Result<Self> {
+        let listener = TcpListener::bind(addr).await?;
+        Ok(Self::serve_with(
+            listener,
+            Arc::new(responder),
+            Some(tokio_rustls::TlsAcceptor::from(Arc::new(config))),
+        ))
+    }
+
     fn serve(listener: TcpListener, responder: Arc<Responder>) -> Self {
+        Self::serve_with(listener, responder, None)
+    }
+
+    fn serve_with(
+        listener: TcpListener,
+        responder: Arc<Responder>,
+        tls: Option<tokio_rustls::TlsAcceptor>,
+    ) -> Self {
         let addr = listener.local_addr().unwrap();
         let connections = Arc::new(AtomicUsize::new(0));
         let active = Arc::new(AtomicUsize::new(0));
@@ -114,10 +137,23 @@ impl FixtureServer {
                     connections.fetch_add(1, Ordering::SeqCst);
                     let now = active.fetch_add(1, Ordering::SeqCst) + 1;
                     peak.fetch_max(now, Ordering::SeqCst);
-                    let (active, requests, responder) =
-                        (active.clone(), requests.clone(), responder.clone());
+                    let (active, requests, responder, tls) = (
+                        active.clone(),
+                        requests.clone(),
+                        responder.clone(),
+                        tls.clone(),
+                    );
                     tokio::spawn(async move {
-                        let _ = handle(stream, &*responder, &requests).await;
+                        match tls {
+                            None => {
+                                let _ = handle(stream, &*responder, &requests).await;
+                            }
+                            Some(acceptor) => {
+                                if let Ok(stream) = acceptor.accept(stream).await {
+                                    let _ = handle(stream, &*responder, &requests).await;
+                                }
+                            }
+                        }
                         active.fetch_sub(1, Ordering::SeqCst);
                     });
                 }
@@ -161,8 +197,8 @@ impl Drop for FixtureServer {
     }
 }
 
-async fn handle(
-    mut stream: TcpStream,
+async fn handle<S: AsyncRead + AsyncWrite + Unpin>(
+    mut stream: S,
     responder: &Responder,
     requests: &Mutex<Vec<String>>,
 ) -> io::Result<()> {
@@ -270,4 +306,53 @@ impl Resolver for Shared {
 
 pub(crate) fn ip(text: &str) -> IpAddr {
     text.parse().unwrap()
+}
+
+/// A throwaway PKI for the TLS tests: one CA, and leaf certificates either
+/// issued by it or self-signed.
+pub(crate) struct TestPki {
+    ca: rcgen::Issuer<'static, rcgen::KeyPair>,
+    ca_der: CertificateDer<'static>,
+}
+
+impl TestPki {
+    pub(crate) fn new() -> Self {
+        let mut params = rcgen::CertificateParams::new(Vec::<String>::new()).unwrap();
+        params.is_ca = rcgen::IsCa::Ca(rcgen::BasicConstraints::Unconstrained);
+        params
+            .distinguished_name
+            .push(rcgen::DnType::CommonName, "p02 test root");
+        let key = rcgen::KeyPair::generate().unwrap();
+        let ca = params.self_signed(&key).unwrap();
+        Self {
+            ca_der: ca.der().clone(),
+            ca: rcgen::Issuer::new(params, key),
+        }
+    }
+
+    pub(crate) fn roots(&self) -> rustls::RootCertStore {
+        let mut roots = rustls::RootCertStore::empty();
+        roots.add(self.ca_der.clone()).unwrap();
+        roots
+    }
+
+    /// A server configuration for `name`, issued by the test CA or self-signed.
+    pub(crate) fn server_config(&self, name: &str, issued_by_ca: bool) -> rustls::ServerConfig {
+        let params = rcgen::CertificateParams::new(vec![name.to_owned()]).unwrap();
+        let key = rcgen::KeyPair::generate().unwrap();
+        let cert = if issued_by_ca {
+            params.signed_by(&key, &self.ca).unwrap()
+        } else {
+            params.self_signed(&key).unwrap()
+        };
+        let key_der = PrivateKeyDer::Pkcs8(PrivatePkcs8KeyDer::from(key.serialize_der()));
+        rustls::ServerConfig::builder_with_provider(Arc::new(
+            rustls::crypto::ring::default_provider(),
+        ))
+        .with_safe_default_protocol_versions()
+        .unwrap()
+        .with_no_client_auth()
+        .with_single_cert(vec![cert.der().clone()], key_der)
+        .unwrap()
+    }
 }

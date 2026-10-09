@@ -163,18 +163,19 @@ impl SafeFetcher {
         })
     }
 
-    /// Test builds only: a fetcher with a widened policy and a scripted
-    /// resolver, and no trust roots (fixtures speak plain HTTP).
+    /// Test builds only: a fetcher with a widened policy, a scripted resolver
+    /// and the test PKI's roots instead of the platform's.
     #[cfg(test)]
     pub(crate) fn for_tests(
         policy: DestinationPolicy,
         resolver: Arc<dyn Resolver>,
+        roots: RootCertStore,
         limits: FetchLimits,
     ) -> Result<Self, SetupError> {
         Self::build(
             policy,
             resolver,
-            RootCertStore::empty(),
+            roots,
             FetcherConfig {
                 user_agent: DEFAULT_USER_AGENT.to_owned(),
                 limits,
@@ -184,13 +185,10 @@ impl SafeFetcher {
 
     /// Fetch `request.url`, following at most the redirect bound, within the
     /// total time bound.
+    ///
+    /// Waiting for a concurrency slot counts toward the total bound: a fetch
+    /// never occupies the worker longer than that bound, queued or not.
     pub async fn fetch(&self, request: &FetchRequest) -> Result<FetchOutcome, FetchError> {
-        let _global = self
-            .global
-            .clone()
-            .acquire_owned()
-            .await
-            .map_err(|_| FetchError::Unavailable)?;
         match tokio::time::timeout(self.limits.total_timeout(), self.fetch_chain(request)).await {
             Ok(result) => result,
             Err(_) => Err(FetchError::TotalTimeout),
@@ -211,7 +209,7 @@ impl SafeFetcher {
             };
             let hop = self.fetch_hop(&target, hop_validators).await?;
             let status = hop.response.status();
-            if status.is_redirection() && status != StatusCode::NOT_MODIFIED {
+            if is_followed_redirect(status) {
                 if redirects >= self.limits.max_redirects() {
                     return Err(FetchError::RedirectLimit);
                 }
@@ -252,7 +250,15 @@ impl SafeFetcher {
             TargetHost::Ip(ip) => ip.to_string(),
             TargetHost::Domain(name) => name.clone(),
         };
+        // Host slot first, global slot second: a fetch queued behind a busy
+        // host must not hold one of the global slots other hosts could use.
         let permit = self.host_permit(&host_key).await?;
+        let global = self
+            .global
+            .clone()
+            .acquire_owned()
+            .await
+            .map_err(|_| FetchError::Unavailable)?;
         let addresses = match target.host() {
             TargetHost::Ip(ip) => vec![*ip],
             TargetHost::Domain(name) => {
@@ -299,6 +305,7 @@ impl SafeFetcher {
         Ok(Hop {
             response: response.0,
             _connection: response.1,
+            _global: global,
             _permit: HostPermit {
                 permit: Some(permit),
                 key: host_key,
@@ -358,6 +365,7 @@ impl SafeFetcher {
 struct Hop<'a> {
     response: http::Response<Incoming>,
     _connection: ConnectionTask,
+    _global: OwnedSemaphorePermit,
     _permit: HostPermit<'a>,
 }
 
@@ -474,6 +482,12 @@ pub(crate) fn next_hop(
         return Err(FetchError::RedirectDowngrade);
     }
     Ok(next)
+}
+
+/// The redirect statuses that carry a target to follow. 300, 305 and 306 are
+/// reported as a final status instead: none names a single safe target.
+fn is_followed_redirect(status: StatusCode) -> bool {
+    matches!(status.as_u16(), 301 | 302 | 303 | 307 | 308)
 }
 
 fn declared_length(headers: &HeaderMap) -> Option<u64> {

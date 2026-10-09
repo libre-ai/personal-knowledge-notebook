@@ -24,7 +24,7 @@ use crate::fetcher::{FetchOutcome, FetchRequest, SafeFetcher, Validators, next_h
 use crate::limits::{BodyKind, FEED_BODY_CEILING, FetchLimits};
 use crate::policy::DestinationPolicy;
 use crate::test_support::{
-    FixtureServer, Reply, ScriptedResolver, Shared, bind_twin, ip, ok, redirect, response,
+    FixtureServer, Reply, ScriptedResolver, Shared, TestPki, bind_twin, ip, ok, redirect, response,
 };
 
 const BENIGN: &[u8] = b"<rss version=\"2.0\"><channel><title>benign</title></channel></rss>";
@@ -36,7 +36,24 @@ fn limits() -> FetchLimits {
 
 fn fetcher(port: u16, resolver: &Arc<ScriptedResolver>, limits: FetchLimits) -> SafeFetcher {
     let policy = DestinationPolicy::for_tests(vec![ip("127.0.0.1")], port);
-    SafeFetcher::for_tests(policy, Arc::new(Shared(resolver.clone())), limits).unwrap()
+    SafeFetcher::for_tests(
+        policy,
+        Arc::new(Shared(resolver.clone())),
+        rustls::RootCertStore::empty(),
+        limits,
+    )
+    .unwrap()
+}
+
+fn tls_fetcher(port: u16, resolver: &Arc<ScriptedResolver>, pki: &TestPki) -> SafeFetcher {
+    let policy = DestinationPolicy::for_tests(vec![ip("127.0.0.1")], port);
+    SafeFetcher::for_tests(
+        policy,
+        Arc::new(Shared(resolver.clone())),
+        pki.roots(),
+        limits(),
+    )
+    .unwrap()
 }
 
 fn get(url: String) -> FetchRequest {
@@ -615,4 +632,124 @@ fn error_messages_and_codes_never_carry_request_data() {
 #[test]
 fn the_production_fetcher_loads_platform_roots() {
     assert!(SafeFetcher::new(crate::fetcher::FetcherConfig::default()).is_ok());
+}
+
+#[tokio::test]
+async fn tls_to_a_certificate_issued_by_a_trusted_root_succeeds() {
+    let pki = TestPki::new();
+    let server = FixtureServer::bind_tls(
+        "127.0.0.1:0".parse().unwrap(),
+        pki.server_config("feeds.test", true),
+        |_| ok(BENIGN),
+    )
+    .await
+    .unwrap();
+    let port = server.addr().port();
+    let resolver = ScriptedResolver::always(vec![ip("127.0.0.1")]);
+    let outcome = tls_fetcher(port, &resolver, &pki)
+        .fetch(&get(format!("https://feeds.test:{port}/feed")))
+        .await
+        .unwrap();
+    assert_eq!(body_of(outcome), BENIGN);
+}
+
+#[tokio::test]
+async fn tls_with_a_self_signed_or_misnamed_certificate_is_refused() {
+    let pki = TestPki::new();
+    for (config, name) in [
+        (pki.server_config("feeds.test", false), "self-signed"),
+        (pki.server_config("other.test", true), "wrong name"),
+    ] {
+        let server =
+            FixtureServer::bind_tls("127.0.0.1:0".parse().unwrap(), config, |_| ok(SECRET))
+                .await
+                .unwrap();
+        let port = server.addr().port();
+        let resolver = ScriptedResolver::always(vec![ip("127.0.0.1")]);
+        let result = tls_fetcher(port, &resolver, &pki)
+            .fetch(&get(format!("https://feeds.test:{port}/feed")))
+            .await;
+        assert_eq!(result, Err(FetchError::TlsFailed), "{name}");
+        assert!(server.requests().is_empty(), "{name}: no request was sent");
+    }
+}
+
+#[tokio::test]
+async fn an_https_origin_redirecting_to_http_is_refused_as_a_downgrade() {
+    let pki = TestPki::new();
+    let plain = FixtureServer::bind("127.0.0.1:0".parse().unwrap(), |_| ok(SECRET))
+        .await
+        .unwrap();
+    let port = plain.addr().port();
+    // Both fixture ports are allowed, so the only reason left to refuse the
+    // second hop is the https -> http downgrade itself.
+    let target = format!("http://feeds.test:{port}/plain");
+    let tls = FixtureServer::bind_tls(
+        "127.0.0.1:0".parse().unwrap(),
+        pki.server_config("feeds.test", true),
+        move |_| redirect(&target),
+    )
+    .await
+    .unwrap();
+    let tls_port = tls.addr().port();
+    let resolver = ScriptedResolver::always(vec![ip("127.0.0.1")]);
+    let policy =
+        DestinationPolicy::for_tests_with_ports(vec![ip("127.0.0.1")], vec![tls_port, port]);
+    let fetcher = SafeFetcher::for_tests(
+        policy,
+        Arc::new(Shared(resolver.clone())),
+        pki.roots(),
+        limits(),
+    )
+    .unwrap();
+    let result = fetcher
+        .fetch(&get(format!("https://feeds.test:{tls_port}/")))
+        .await;
+    assert_eq!(result, Err(FetchError::RedirectDowngrade));
+    assert_eq!(tls.connections(), 1);
+    // Control: the same plain origin is reachable when nothing downgrades.
+    let direct = fetcher
+        .fetch(&get(format!("http://feeds.test:{port}/plain")))
+        .await;
+    assert_eq!(body_of(direct.unwrap()), SECRET);
+    assert_eq!(
+        plain.connections(),
+        1,
+        "the plain-text origin was reached only by the direct control fetch"
+    );
+}
+
+#[tokio::test]
+async fn statuses_without_a_single_safe_target_are_not_followed() {
+    for status in ["300 Multiple Choices", "305 Use Proxy"] {
+        let reply = response(status, &[("Location", "http://[::1]/".to_owned())], b"");
+        let server = FixtureServer::bind("127.0.0.1:0".parse().unwrap(), move |_| {
+            Reply::Raw(reply.clone())
+        })
+        .await
+        .unwrap();
+        let port = server.addr().port();
+        let resolver = ScriptedResolver::new(vec![]);
+        let outcome = fetcher(port, &resolver, limits())
+            .fetch(&get(format!("http://127.0.0.1:{port}/")))
+            .await
+            .unwrap();
+        assert!(
+            matches!(outcome, FetchOutcome::Status { .. }),
+            "{status}: {outcome:?}"
+        );
+        assert_eq!(server.connections(), 1);
+    }
+}
+
+#[tokio::test]
+async fn a_closed_port_is_a_connect_failure() {
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    drop(listener);
+    let resolver = ScriptedResolver::new(vec![]);
+    let result = fetcher(port, &resolver, limits())
+        .fetch(&get(format!("http://127.0.0.1:{port}/")))
+        .await;
+    assert_eq!(result, Err(FetchError::ConnectFailed));
 }
