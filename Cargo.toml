@@ -57,6 +57,19 @@ tokio-postgres = { version = "=0.7.18", features = ["with-serde_json-1"] }
 tokio-rustls ={ version = "=0.26.6", default-features = false, features = ["ring", "tls12"] }
 url = "=2.5.8"
 
+# Release profile of the notebook-core wasm build. Without it the module is
+# larger and keeps a `name` section whose symbol hashes follow the checkout
+# path, so one source yields a different fingerprint at every location (the
+# profile was part of the hub build that the product-host campaigns pinned;
+# see docs/notebook-build-migration.md).
+# Cargo profiles are workspace-wide, so the P02 crates inherit `panic = "abort"`
+# in release builds; checked by tools/qualification/notebook-core-v2/inputs.ts.
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
+
 # Audited aes fork (constant-time hardening) re-declared by this workspace:
 # applies to the whole graph, .cargo/config.toml pins the wasm32 target
 # (design §5.2.4 — the patch travelled with its consumer).

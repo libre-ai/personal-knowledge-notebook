@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "libre-ai.notebook-resource-classes.v2",
+  "browserProcessFaultPolicy": {
+    "requiredEvidence": [
+      "abrupt-process-termination-recovery",
+      "process-crash-recovery",
+      "no-partial-artifact",
+      "same-profile-recovery",
+      "fresh-worker-after-recovery"
+    ],
+    "optionalDiagnostics": ["browser-process-oom"],
+    "unsafeHostExhaustionForbidden": true
+  },
+  "defaultQualificationClassId": "desktop-arm64-high-memory-reference",
+  "minimumProductCandidateClassId": "desktop-arm64-high-memory-reference",
+  "requiredBrowserCapabilities": [
+    "webassembly-simd128",
+    "dedicated-worker",
+    "arraybuffer-transfer",
+    "web-crypto",
+    "indexeddb"
+  ],
+  "productStorageQuotaCandidateBytes": 536870912,
+  "classes": [
+    {
+      "id": "desktop-arm64-constrained-8gib",
+      "label": "Desktop arm64 constrained — 8 GiB",
+      "operatingSystem": "darwin",
+      "architecture": "arm64",
+      "minimumPhysicalMemoryBytes": 8589934592,
+      "maximumPhysicalMemoryBytesExclusive": 12884901888,
+      "minimumLogicalCpu": 8,
+      "maximumLogicalCpuExclusive": null,
+      "evidenceStatus": "community-evidence-requested",
+      "purpose": "community-observation"
+    },
+    {
+      "id": "desktop-arm64-mainstream-16gib",
+      "label": "Desktop arm64 mainstream — 16 to 24 GiB",
+      "operatingSystem": "darwin",
+      "architecture": "arm64",
+      "minimumPhysicalMemoryBytes": 17179869184,
+      "maximumPhysicalMemoryBytesExclusive": 34359738368,
+      "minimumLogicalCpu": 8,
+      "maximumLogicalCpuExclusive": null,
+      "evidenceStatus": "community-evidence-requested",
+      "purpose": "community-observation"
+    },
+    {
+      "id": "desktop-arm64-high-memory-reference",
+      "label": "Desktop arm64 high-memory reference — 32 GiB or more",
+      "operatingSystem": "darwin",
+      "architecture": "arm64",
+      "minimumPhysicalMemoryBytes": 34359738368,
+      "maximumPhysicalMemoryBytesExclusive": null,
+      "minimumLogicalCpu": 12,
+      "maximumLogicalCpuExclusive": null,
+      "evidenceStatus": "qualified-reference-96934a8",
+      "purpose": "minimum-product-candidate"
+    }
+  ]
+}

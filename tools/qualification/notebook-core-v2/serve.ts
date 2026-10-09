@@ -1,11 +1,15 @@
 import { resolve } from "node:path";
 
+import { goldenVectorsPath, inventoryGoldenVectors } from "./inputs";
+
 const repositoryRoot = resolve(import.meta.dir, "../../..");
 const outputDirectory = resolve(repositoryRoot, "target/notebook-core-v2-qualification");
-const goldenVector = resolve(
-  repositoryRoot,
-  "contracts/fixtures/notebook-core-v2/golden-vectors.v1.json",
-);
+// The golden vectors are canonical in the contracts authority and consumed
+// pinned through node_modules; this repository carries no copy. A missing or
+// reshaped fixture stops the server here rather than surfacing as a 404 that
+// the browser specs report as an unrelated JSON error.
+const goldenVector = goldenVectorsPath(repositoryRoot);
+const goldenInventory = inventoryGoldenVectors(goldenVector);
 const hostname = "127.0.0.1";
 const port = 41_773;
 
@@ -58,4 +62,6 @@ const server = Bun.serve({
   },
 });
 
-console.log(`Notebook qualification server ready on ${server.hostname}:${server.port}`);
+console.log(
+  `Notebook qualification server ready on ${server.hostname}:${server.port} (${goldenInventory.total} golden vectors, sha256=${goldenInventory.sha256})`,
+);
