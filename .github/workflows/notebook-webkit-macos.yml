@@ -80,6 +80,16 @@ jobs:
       - name: Preload locked native dependencies
         working-directory: composition/personal-knowledge-workspace
         run: cargo fetch --locked
+      # The P02 database tests start throwaway PostgreSQL clusters and refuse
+      # to pass without server binaries; the macOS image ships none (the
+      # Linux composition job uses the image's PostgreSQL 16).
+      - name: Install PostgreSQL 16 for the P02 database tests
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+          HOMEBREW_NO_INSTALL_CLEANUP: '1'
+        run: |
+          brew install postgresql@16
+          echo "P02_PG_BINDIR=$(brew --prefix postgresql@16)/bin" >> "$GITHUB_ENV"
       - name: Run native Notebook tests
         run: |
           python3 -B tooling/.github/composition/check-products.py \
