@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: libre-ai/project-governance
-          ref: 2024a4884b314df99be457618be9c3b48a0287f7
+          ref: 7c2238d6185e59d446586688ca7db32e6a17d3e0
           path: tooling
           persist-credentials: false
       - name: Test macOS installer boundaries
@@ -47,7 +47,7 @@ jobs:
       - name: Prepare pinned source composition
         run: |
           python3 -B tooling/.github/composition/run-composition.py \
-            --target personal-knowledge-notebook --revision "$INPUT_TARGET_REF" \
+            --target personal-knowledge-workspace --revision "$INPUT_TARGET_REF" \
             --root "$GITHUB_WORKSPACE/composition" --phase prepare
       - name: Install verified macOS toolchains
         run: |
@@ -65,26 +65,26 @@ jobs:
       - name: Install frozen composition and check Notebook
         run: |
           python3 -B tooling/.github/composition/run-composition.py \
-            --target personal-knowledge-notebook --revision "$INPUT_TARGET_REF" \
+            --target personal-knowledge-workspace --revision "$INPUT_TARGET_REF" \
             --root "$GITHUB_WORKSPACE/composition" --phase check
       - name: Preload locked native dependencies
-        working-directory: composition/personal-knowledge-notebook
+        working-directory: composition/personal-knowledge-workspace
         run: cargo fetch --locked
       - name: Run native Notebook tests
         run: |
           python3 -B tooling/.github/composition/check-products.py \
-            --root "$GITHUB_WORKSPACE/composition" --target personal-knowledge-notebook --gate native \
+            --root "$GITHUB_WORKSPACE/composition" --target personal-knowledge-workspace --gate native \
             --bun "$(command -v bun)" --cargo "$(command -v cargo)" --node "$(command -v node)"
       - name: Build current Notebook WASM
         run: |
           python3 -B tooling/.github/composition/check-products.py \
-            --root "$GITHUB_WORKSPACE/composition" --target personal-knowledge-notebook --gate wasm \
+            --root "$GITHUB_WORKSPACE/composition" --target personal-knowledge-workspace --gate wasm \
             --bun "$(command -v bun)" --cargo "$(command -v cargo)" --node "$(command -v node)"
       - name: Install WebKit for the locked Playwright version
-        working-directory: composition/personal-knowledge-notebook/apps/notebook
+        working-directory: composition/personal-knowledge-workspace/apps/notebook
         run: bun x --no-install playwright install webkit
       - name: Run positive WebKit browser tests
-        working-directory: composition/personal-knowledge-notebook
+        working-directory: composition/personal-knowledge-workspace
         run: |
           python3 - <<'PY'
           import os
