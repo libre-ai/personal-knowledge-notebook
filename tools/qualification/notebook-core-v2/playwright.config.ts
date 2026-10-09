@@ -8,7 +8,16 @@ export default defineConfig({
   outputDir: resolve(process.cwd(), "target/notebook-core-v2-qualification/test-results"),
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    {
+      name: "firefox",
+      use: {
+        ...devices["Desktop Firefox"],
+        // TODO(playwright-1.64): remove once @playwright/test >= 1.64.0 (microsoft/playwright#42731) — Juggler loses a message on COOP-triggered context replacement.
+        launchOptions: {
+          firefoxUserPrefs: { "browser.tabs.remote.useCrossOriginOpenerPolicy": false },
+        },
+      },
+    },
     { name: "webkit", use: { ...devices["Desktop Safari"] } },
   ],
   reporter: "line",

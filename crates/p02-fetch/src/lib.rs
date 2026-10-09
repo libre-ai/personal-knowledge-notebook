@@ -10,6 +10,7 @@ pub mod address;
 mod body;
 pub mod error;
 mod fetcher;
+mod gauge;
 pub mod limits;
 pub mod policy;
 pub mod resolver;

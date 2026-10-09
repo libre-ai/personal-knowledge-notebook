@@ -273,6 +273,10 @@ async function launchPersistent(
     acceptDownloads: true,
     downloadsPath,
     headless: true,
+    // TODO(playwright-1.64): remove once @playwright/test >= 1.64.0 (microsoft/playwright#42731) — Juggler loses a message on COOP-triggered context replacement.
+    ...(browserName === "firefox"
+      ? { firefoxUserPrefs: { "browser.tabs.remote.useCrossOriginOpenerPolicy": false } }
+      : {}),
   });
   if (initScript) await context.addInitScript(initScript);
   const externalRequests: string[] = [];
