@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: libre-ai/project-governance
-          ref: 46061644fb17bc14e67d3501602b7904fce75ae0
+          ref: 1c8b37c80beb41f640982768ec27304a911e0b8e
           path: tooling
           persist-credentials: false
       - name: Test macOS installer boundaries
