@@ -1,3 +1,15 @@
+# Base dependency policy of the constellation (decision Y43, 2026-10-09).
+# Every Rust repository of libre-ai carries this file unchanged and executes it
+# with cargo-deny from its required check. The licence allowlist is the inbound
+# policy of ADR-0042 §4 and §11; GPL (linked), AGPL and SSPL are refused by
+# omission.
+#
+# `[sources.allow-org] github = ["libre-ai"]` bounds git-dep trust to the
+# organisation (ADR-0020 §2.5). `allow-wildcard-paths` admits the version-less
+# `path` (and organisation `git`) dependencies between private workspace
+# crates; a registry dependency declared as `*` stays refused by
+# `wildcards = "deny"`, and so does any path dependency of a publishable crate.
+
 [graph]
 all-features = true
 
@@ -7,8 +19,10 @@ yanked = "deny"
 [licenses]
 confidence-threshold = 0.8
 unused-allowed-license = "allow"
-# Outbound workspace licences are governed by LICENSING.md; this allowlist is
-# intentionally restricted to inbound dependencies.
+# The allowlist governs inbound dependencies only: the workspace's own private
+# crates carry the outbound licences of the repository (REUSE.toml), which
+# `private.ignore` keeps out of this check. LGPL is not admitted: Cargo links
+# statically, and ADR-0042 §4 admits LGPL only where dynamic linking applies.
 private = { ignore = true }
 allow = [
   "MIT",
@@ -26,6 +40,7 @@ allow = [
 [bans]
 multiple-versions = "warn"
 wildcards = "deny"
+allow-wildcard-paths = true
 
 [sources]
 unknown-registry = "deny"
