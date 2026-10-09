@@ -1,0 +1,23 @@
+{
+  "name": "@libre-ai/p02-api",
+  "version": "0.1.0",
+  "private": true,
+  "license": "EUPL-1.2",
+  "type": "module",
+  "engines": {
+    "bun": ">=1.4.0"
+  },
+  "scripts": {
+    "check:bun": "bun ../../node_modules/@libre-ai/governance/tools/quality/check-bun-minimum.ts",
+    "prestart": "bun run check:bun",
+    "start": "bun src/main.ts",
+    "pretest": "bun run check:bun",
+    "test": "bun test",
+    "pretypecheck": "bun run check:bun",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  }
+}
