@@ -25,6 +25,7 @@
     "@libre-ai/governance": "file:../project-governance",
     "@libre-ai/contracts-authority": "file:../schemas-and-contracts",
     "@biomejs/biome": "2.5.3",
+    "@playwright/test": "1.62.1",
     "@types/bun": "1.3.14",
     "typescript": "7.0.2",
     "@bytecodealliance/jco-transpile": "0.4.2"
@@ -38,11 +39,21 @@
     "check:secret-scan": "bun run check:bun:runtime && bun node_modules/@libre-ai/governance/tools/quality/check-secret-scan.ts",
     "check:personal-data": "bun run check:bun:runtime && bun node_modules/@libre-ai/governance/tools/quality/check-personal-data-boundary.ts",
     "check:no-transmission": "bun run check:bun:runtime && bun node_modules/@libre-ai/governance/tools/quality/check-no-transmission.ts --roots apps/notebook/src --allow apps/notebook/src/backup/notebook-core-worker.ts",
+    "check:qualification": "bun run check:bun:runtime && bun test tools/qualification/notebook-core-v2 && bun tools/qualification/notebook-core-v2/check-inputs.ts",
+    "typecheck": "bun run check:bun:runtime && tsc --noEmit -p tsconfig.json",
     "lint": "bun run check:bun:runtime && biome ci .",
     "pretest": "bun run check:bun",
     "test": "cargo test --locked",
-    "check": "bun run check:bun && bun run check:toolchain && bun run check:wit && bun run check:app && bun run check:secret-scan && bun run check:personal-data && bun run check:no-transmission && bun run lint",
-    "check:component": "bun run check:bun:runtime && node scripts/check-component-encoding.ts"
+    "check": "bun run check:bun && bun run check:toolchain && bun run check:wit && bun run check:app && bun run check:qualification && bun run check:secret-scan && bun run check:personal-data && bun run check:no-transmission && bun run lint",
+    "check:component": "bun run check:bun:runtime && node scripts/check-component-encoding.ts",
+    "qualify:notebook-core-v2:toolchain": "bun run check:bun:runtime && bun tools/qualification/notebook-core-v2/check-toolchain.ts",
+    "qualify:notebook-core-v2:resource-class": "bun run check:bun:runtime && bun tools/qualification/notebook-core-v2/check-resource-class.ts",
+    "qualify:notebook-core-v2:build": "bun run check:bun:runtime && node tools/qualification/notebook-core-v2/build.ts",
+    "qualify:notebook-core-v2:host": "bun run check:bun:runtime && bun run qualify:notebook-core-v2:toolchain && bun run qualify:notebook-core-v2:build && playwright test --config tools/qualification/notebook-core-v2/playwright.config.ts",
+    "qualify:notebook-product-host:faults": "bun run check:bun:runtime && bun run qualify:notebook-core-v2:toolchain && bun run --cwd apps/notebook build:gate-b && playwright test --config tools/qualification/notebook-core-v2/product-host-faults.config.ts",
+    "qualify:notebook-product-host:storage": "bun run check:bun:runtime && bun run qualify:notebook-core-v2:toolchain && bun run --cwd apps/notebook build:gate-b && playwright test --config tools/qualification/notebook-core-v2/product-host-storage.config.ts",
+    "qualify:notebook-core-v2:performance": "bun run check:bun:runtime && NOTEBOOK_QUALIFICATION_REQUIRE_ARCHIVES=1 bun run qualify:notebook-core-v2:toolchain && bun run qualify:notebook-core-v2:resource-class && bun run qualify:notebook-core-v2:build && playwright test --config tools/qualification/notebook-core-v2/performance.config.ts && bun tools/qualification/notebook-core-v2/summarize-performance.ts",
+    "diagnose:notebook-core-v2:performance:vm": "bun run check:bun:runtime && NOTEBOOK_QUALIFICATION_EVIDENCE_MODE=vm-diagnostic bun run qualify:notebook-core-v2:performance"
   },
   "workspaces": [
     "apps/notebook"
