@@ -12,9 +12,16 @@ import {
   countLockedPackages,
   main,
   parseArguments,
+  REQUIRED_CHECKS,
   sha256Of,
   verifyDigest,
 } from "./check-dependency-policy";
+
+describe("REQUIRED_CHECKS", () => {
+  test("keeps the calendar-dependent advisory verdict out of the required check (I-26)", () => {
+    expect([...REQUIRED_CHECKS]).toEqual(["bans", "licenses", "sources"]);
+  });
+});
 
 describe("archiveFor", () => {
   test("pins the CI runner archive to the fleet template digest", () => {

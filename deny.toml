@@ -1,8 +1,14 @@
-# Base dependency policy of the constellation (decision Y43, 2026-10-09).
-# Every Rust repository of libre-ai carries this file unchanged and executes it
-# with cargo-deny from its required check. The licence allowlist is the inbound
-# policy of ADR-0042 §4 and §11; GPL (linked), AGPL and SSPL are refused by
-# omission.
+# Base dependency policy of the constellation (decisions Y43-Y46, 2026-10-09).
+# Every Rust repository of libre-ai carries this file unchanged and executes
+# `bans`, `licenses` and `sources` with cargo-deny from its required check.
+# The licence allowlist is the inbound policy of ADR-0042 §4 and §11; GPL
+# (linked), AGPL and SSPL are refused by omission.
+#
+# `[advisories]` is NOT part of the required verdict (I-26, Y44): an advisory
+# verdict depends on the RustSec database of the day, so a fleet advisory
+# control notifies without blocking. The section is kept for that control and
+# for manual runs (`cargo deny check advisories`), which also apply
+# `yanked = "deny"`.
 #
 # `[sources.allow-org] github = ["libre-ai"]` bounds git-dep trust to the
 # organisation (ADR-0020 §2.5). `allow-wildcard-paths` admits the version-less
@@ -17,7 +23,7 @@ all-features = true
 yanked = "deny"
 
 [licenses]
-confidence-threshold = 0.8
+confidence-threshold = 0.9
 unused-allowed-license = "allow"
 # The allowlist governs inbound dependencies only: the workspace's own private
 # crates carry the outbound licences of the repository (REUSE.toml), which
@@ -28,6 +34,9 @@ allow = [
   "MIT",
   "MIT-0",
   "Apache-2.0",
+  # Apache-2.0 plus an additional permission (ADR-0042 §11, Y45); carried by
+  # `ar_archive_writer`, a build dependency of `psm` through `sqlparser`.
+  "Apache-2.0 WITH LLVM-exception",
   "BSD-2-Clause",
   "BSD-3-Clause",
   "ISC",
