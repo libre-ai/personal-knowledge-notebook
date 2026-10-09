@@ -22,7 +22,14 @@ minification are disabled. Fault-module generation reuses the already pinned Rus
 without adding a dependency; each modified module is validated before browser execution and remains
 under ignored `target/`.
 
-The existing `@playwright/test 1.61.1` dependency executes local Chromium, Firefox, and WebKit. The harness blocks every non-loopback request and uses only public deterministic fixtures. `toolchains/notebook-qualification.json` pins the Playwright descriptor plus the official Chromium 149/revision 1228, Firefox 151/revision 1532, and WebKit 26.5/revision 2311 archives and installed executables for Darwin arm64. `check-toolchain.ts` verifies the installed files on every run and verifies archive SHA-256 values when `NOTEBOOK_QUALIFICATION_ARCHIVE_DIR` is supplied.
+The harness was qualified with `@playwright/test 1.61.1`, which executes local Chromium, Firefox, and WebKit. The harness blocks every non-loopback request and uses only public deterministic fixtures. `toolchains/notebook-qualification.json` pins the Playwright descriptor plus the official Chromium 149/revision 1228, Firefox 151/revision 1532, and WebKit 26.5/revision 2311 archives and installed executables for Darwin arm64. `check-toolchain.ts` verifies the installed files on every run and verifies archive SHA-256 values when `NOTEBOOK_QUALIFICATION_ARCHIVE_DIR` is supplied.
+
+On 2026-10-09 the workspace moved to `@playwright/test 1.62.1`, because the Chromium revision 1228
+installed by 1.61.1 intermittently dies on `SIGTRAP` on hosted `ubuntu-24.04` runners. The
+qualification manifest was deliberately left on the 1.61.1 evidence toolchain: until this harness is
+re-qualified, `check-toolchain.ts` fails closed on the Playwright version and descriptor. A
+re-qualification must also re-audit the internal `killForTests` channel used by the product-host fault
+campaign.
 
 ## Rejected alternative
 
