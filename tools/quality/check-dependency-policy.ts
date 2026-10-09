@@ -1,10 +1,9 @@
 // SPDX-FileCopyrightText: 2026 Libre AI contributors
 // SPDX-License-Identifier: EUPL-1.2
 //
-// Dependency policy gate (decision Y43, 2026-10-09): executes this
+// Dependency policy gate (decisions Y43 and Y44, 2026-10-09): executes this
 // repository's own `deny.toml` against its committed Cargo graph(s) with
-// cargo-deny — advisories, bans, licenses and sources — from the required
-// check.
+// cargo-deny — bans, licenses and sources — from the required check.
 //
 // Why the binary is fetched here rather than taken from PATH: the required
 // check runs inside the source composition, whose runner installs Bun, Node
@@ -16,11 +15,11 @@
 // `reusable-dependency-policy.yml`). The cached archive is re-hashed on every
 // run, so the cache is never trusted beyond its digest.
 //
-// Why advisories block here although the fleet template only reports them:
-// Y43 makes advisories part of the required verdict. The verdict therefore
-// depends on the RustSec database of the day; an accepted risk is recorded as
-// a dated waiver in `deny.toml` under docs/security/ADVISORY-WAIVER-POLICY.md
-// (project-governance), never as a silent exception.
+// Why advisories are not checked here (I-26, Y44): bans, licenses and sources
+// are a pure function of the committed Cargo.lock and deny.toml, so their
+// verdict is reproducible at constant commit, which is what a required check
+// may assert. An advisory verdict depends on the RustSec database fetched at
+// run time; a fleet advisory control notifies on it without blocking.
 
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -37,6 +36,9 @@ import { homedir, tmpdir } from "node:os";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 
 export const CARGO_DENY_VERSION = "0.19.5";
+
+/** The checks whose verdict is a function of the tree alone (I-26): no `advisories`. */
+export const REQUIRED_CHECKS = ["bans", "licenses", "sources"] as const;
 
 export interface CargoDenyArchive {
   readonly triple: string;
@@ -213,10 +215,7 @@ export async function main(argv: readonly string[]): Promise<number> {
           "--config",
           config,
           "--show-stats",
-          "advisories",
-          "bans",
-          "licenses",
-          "sources",
+          ...REQUIRED_CHECKS,
         ],
         root,
       );
@@ -229,7 +228,7 @@ export async function main(argv: readonly string[]): Promise<number> {
     rmSync(scratch, { recursive: true, force: true });
   }
   console.log(
-    `Dependency policy verified: advisories, bans, licenses and sources hold for ` +
+    `Dependency policy verified: ${REQUIRED_CHECKS.join(", ")} hold for ` +
       `${manifests.length} manifest(s), ${lockedPackages} locked package(s) inspected ` +
       `(cargo-deny ${CARGO_DENY_VERSION}, archive sha256 ${archive.sha256}).`,
   );
