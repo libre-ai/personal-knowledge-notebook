@@ -10,7 +10,9 @@ import { componentNew, componentWit } from "@bytecodealliance/jco-transpile/wasm
 import {
   assertNoMachinePaths,
   machinePathContext,
+  machinePathRemaps,
   REMAP_TARGETS,
+  remapConfigArgument,
 } from "../../../scripts/machine-paths.ts";
 
 const qualificationDirectory = dirname(fileURLToPath(import.meta.url));
@@ -122,6 +124,10 @@ function sha256(value: Uint8Array): string {
 // machine. The recipe remaps them itself (external Rust flags stay refused above);
 // `--config` arrays are appended to the `+simd128` rustflags of .cargo/config.toml.
 const pathContext = machinePathContext(repositoryRoot);
+const wasmRemap = remapConfigArgument(
+  "target.wasm32-unknown-unknown.rustflags",
+  machinePathRemaps(pathContext),
+);
 run("cargo", [
   "build",
   "--locked",
@@ -130,6 +136,8 @@ run("cargo", [
   "--release",
   "--target",
   "wasm32-unknown-unknown",
+  "--config",
+  wasmRemap,
 ]);
 run(
   "cargo",
@@ -141,6 +149,8 @@ run(
     "--release",
     "--target",
     "wasm32-unknown-unknown",
+    "--config",
+    wasmRemap,
     "--features",
     "qualification-faults",
   ],

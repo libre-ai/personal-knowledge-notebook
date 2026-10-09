@@ -7,7 +7,13 @@ import { spawnSync } from "node:child_process";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { assertNoMachinePaths, machinePathContext, rustflagOverrides } from "./machine-paths";
+import {
+  assertNoMachinePaths,
+  machinePathContext,
+  machinePathRemaps,
+  remapConfigArgument,
+  rustflagOverrides,
+} from "./machine-paths";
 
 // Release binaries of this workspace; `cargo metadata` would also list test fixtures.
 const RELEASE_BINARIES = [{ package: "p02-worker", binary: "p02-worker" }] as const;
@@ -27,6 +33,8 @@ const result = spawnSync(
     "--locked",
     "--release",
     ...RELEASE_BINARIES.flatMap(({ package: name, binary }) => ["-p", name, "--bin", binary]),
+    "--config",
+    remapConfigArgument("build.rustflags", machinePathRemaps(context)),
   ],
   { cwd: repositoryRoot, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
 );
