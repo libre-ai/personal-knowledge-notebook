@@ -31,6 +31,12 @@ re-qualified, `check-toolchain.ts` fails closed on the Playwright version and de
 re-qualification must also re-audit the internal `killForTests` channel used by the product-host fault
 campaign.
 
+Generation Q moves the workspace to `@playwright/test 1.64.0`, which contains the change that closed
+microsoft/playwright#42731 (first Firefox navigation to a `Cross-Origin-Opener-Policy: same-origin`
+page never resolving). The temporary `browser.tabs.remote.useCrossOriginOpenerPolicy=false` Firefox
+pref is removed from the harness configurations. The qualification manifest stays on the 1.61.1
+evidence toolchain for the same reason as above.
+
 ## Rejected alternative
 
 The full `@bytecodealliance/jco 1.25.2` CLI was tested and rejected before commit. It includes unused
