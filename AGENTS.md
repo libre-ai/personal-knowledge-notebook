@@ -22,7 +22,7 @@ Doctrine lives upstream: https://raw.githubusercontent.com/libre-ai/project-gove
 
 ## Commands
 
-- Prepare the pinned composition (target `personal-knowledge-notebook`):
+- Prepare the pinned composition (target `personal-knowledge-workspace`):
   https://raw.githubusercontent.com/libre-ai/project-governance/HEAD/docs/LOCAL-COMPOSITION.md
 - `bun run check` from this repository's root in the composition.
 - Native engine: `cargo fetch --locked`, then `cargo test --locked --offline`.
