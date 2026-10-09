@@ -1,0 +1,20 @@
+[package]
+name = "p02-domain"
+version = "0.1.0"
+description = "P02 domain types, starting with the p02-job-v1 contract shared by the API and the worker"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+sha2.workspace = true
+
+[lints]
+workspace = true

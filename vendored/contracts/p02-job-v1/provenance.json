@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "libre-ai.vendored-contract-provenance.v1",
+  "authority": "libre-ai/schemas-and-contracts",
+  "commit": "6a3fb0029a824d8044177c5b5d0ae359bb7b6a38",
+  "contract": "p02-job-v1",
+  "files": [
+    {
+      "path": "p02-job.v1.schema.json",
+      "source": "contracts/schemas/p02-job.v1.schema.json",
+      "sha256": "3a0233ef54f0bc2079badd9e5b043caec3195fea6bcf14994ceb1dbcdee8e822"
+    },
+    {
+      "path": "common.v1.schema.json",
+      "source": "contracts/schemas/common.v1.schema.json",
+      "sha256": "2b96e658dc88c8118fcd3720d6b9b30c445debd1a4facbfe43b321b610a1a396"
+    },
+    {
+      "path": "vectors.json",
+      "source": "contracts/fixtures/p02-job-v1/vectors.json",
+      "sha256": "d16ef619bfa8024acca361cf25d77718a6dd04007b5ef3ad5967c872ed014cc1"
+    },
+    {
+      "path": "SEMANTICS.md",
+      "source": "contracts/p02-job-v1/SEMANTICS.md",
+      "sha256": "7467401bef6c8f475efef643bea6e22a75771a0e273fe928b058d32dc55b2374"
+    }
+  ]
+}

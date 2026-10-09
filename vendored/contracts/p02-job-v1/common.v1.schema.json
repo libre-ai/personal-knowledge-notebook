@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.libre-ai.fr/schemas/common.v1.schema.json",
+  "title": "Libre AI common contract definitions v1",
+  "$defs": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^libre-ai\\.[a-z][a-z0-9-]*\\.v1$"
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{2,127}$"
+    },
+    "urn": {
+      "type": "string",
+      "pattern": "^urn:libre-ai:[a-z][a-z0-9-]*:[A-Za-z0-9._~-]+$"
+    },
+    "tenantId": {
+      "type": "string",
+      "pattern": "^ten_[a-z0-9]{16,64}$"
+    },
+    "serviceTenantId": {
+      "oneOf": [{ "const": "public" }, { "$ref": "#/$defs/tenantId" }]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "sourceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri", "retrievedAt", "digest", "licence"],
+      "properties": {
+        "uri": { "type": "string", "format": "uri" },
+        "retrievedAt": { "$ref": "#/$defs/timestamp" },
+        "digest": { "$ref": "#/$defs/sha256" },
+        "licence": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    },
+    "artifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "digest", "mediaType"],
+      "properties": {
+        "id": { "$ref": "#/$defs/urn" },
+        "digest": { "$ref": "#/$defs/sha256" },
+        "mediaType": { "type": "string", "pattern": "^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+$" }
+      }
+    },
+    "approvalReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "approvedAt", "reference", "subjectDigest"],
+      "properties": {
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+        "approvedAt": { "$ref": "#/$defs/timestamp" },
+        "reference": { "$ref": "#/$defs/urn" },
+        "subjectDigest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}
