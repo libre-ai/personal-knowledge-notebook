@@ -9,6 +9,7 @@
         "@bytecodealliance/jco-transpile": "0.4.2",
         "@libre-ai/contracts-authority": "file:../schemas-and-contracts",
         "@libre-ai/governance": "file:../project-governance",
+        "@playwright/test": "1.62.1",
         "@types/bun": "1.3.14",
         "typescript": "7.0.2",
       },

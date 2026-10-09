@@ -26,6 +26,8 @@ Covered:
 - product-host quota guards covering a below-floor preflight and a qualification-injected IndexedDB transaction abort, with no partial record/download and a successful clean restart. The injected abort is not credited as physical disk exhaustion;
 - a macOS arm64-only exact-product-host storage campaign on a disposable 6 GiB sparse APFS image: it records an OS `ENOSPC`, refuses a public deterministic 16 MiB restore during IndexedDB staging before any worker starts, preserves the prior product state after relaunching the same profile, then proves successful restore and backup after the filler is removed.
 
+`bun run check:qualification` runs in `bun run check` (hence in the required composition check) and needs no browser or pinned hardware: it runs this directory's unit tests, then `check-inputs.ts`, which prints what it examined and fails when an input is missing, unreadable or reshaped: the 38 golden vectors of the pinned contracts authority (1 backup golden, 1 Context golden, 10 backup refusals, 12 Context refusals, 8 numeric, 6 resource), the resource-class manifest, the wasm release profile, and that every `bun run` script cited by a tracked document is declared. The browser, process-fault, storage and performance campaigns below remain manual: they need the pinned Node, Playwright 1.61.1 browsers and physical hardware.
+
 Run with the pinned Bun environment, the manifest-matching Node executable, and locally installed Playwright browsers. Supplying the archive directory additionally verifies all four downloaded archives before execution:
 
 ```sh
