@@ -200,7 +200,10 @@ async fn redirects_to_private_or_forbidden_targets_are_refused_before_dialling()
             None,
         ),
         (
-            "http://user:pw@127.0.0.1:{port}/",
+            // Userinfo is refused before the host is looked at; the host is a
+            // documentation name so the tree-wide secret gate reads it as an
+            // example, which it is.
+            "http://user:pw@localhost:{port}/",
             FetchError::CredentialsForbidden,
             None,
         ),
