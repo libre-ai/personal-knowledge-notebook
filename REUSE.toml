@@ -54,3 +54,12 @@ SPDX-License-Identifier = "CC-BY-4.0"
 path = ["docs/DEVELOPMENT.md", "docs/verification-status.json", "docs/notebook-build-migration.md"]
 SPDX-FileCopyrightText = "2026 Libre AI contributors"
 SPDX-License-Identifier = "CC-BY-4.0"
+
+# Byte-exact copy of the p02-job-v1 contract at a pinned commit of the
+# contract authority (vendored/contracts/p02-job-v1/provenance.json); the
+# authority publishes contracts/** under Apache-2.0.
+[[annotations]]
+path = ["vendored/contracts/**"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Libre AI contributors"
+SPDX-License-Identifier = "Apache-2.0"

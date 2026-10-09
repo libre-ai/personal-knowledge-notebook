@@ -1,0 +1,399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.libre-ai.fr/schemas/p02-job.v1.schema.json",
+  "title": "Libre AI P02 Worker Job Command or Result v1",
+  "description": "Internal exchange between the P02 API (producer of commands) and the P02 worker (producer of results) through the P02 PostgreSQL job queue. Every string is untrusted data, never instructions.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/command"
+    },
+    {
+      "$ref": "#/$defs/result"
+    }
+  ],
+  "$defs": {
+    "base": {
+      "type": "object",
+      "required": ["schemaVersion", "kind", "jobId", "tenantId"],
+      "properties": {
+        "schemaVersion": {
+          "const": "libre-ai.p02-job.v1"
+        },
+        "kind": {
+          "enum": ["command", "result"]
+        },
+        "jobId": {
+          "$ref": "common.v1.schema.json#/$defs/identifier"
+        },
+        "tenantId": {
+          "$ref": "common.v1.schema.json#/$defs/tenantId"
+        }
+      }
+    },
+    "validators": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "etag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^[\\x21-\\x7E](?:[\\x20-\\x7E]*[\\x21-\\x7E])?$"
+        },
+        "lastModified": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024,
+          "pattern": "^[\\x21-\\x7E](?:[\\x20-\\x7E]*[\\x21-\\x7E])?$"
+        }
+      }
+    },
+    "fetchSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "sourceId", "url", "bodyKind"],
+      "properties": {
+        "type": {
+          "const": "fetch-source"
+        },
+        "sourceId": {
+          "$ref": "common.v1.schema.json#/$defs/identifier"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 2048,
+          "pattern": "^https?://(?:\\[[0-9A-Fa-f:.]+\\]|[\\x21\\x22\\x24-\\x2E\\x30-\\x39\\x3B-\\x3E\\x41-\\x5A\\x5E-\\x7E]+)(?::(?:80|443))?(?:[/?#][\\x21-\\x7E]*)?$"
+        },
+        "bodyKind": {
+          "enum": ["feed", "page"]
+        },
+        "validators": {
+          "$ref": "#/$defs/validators"
+        }
+      }
+    },
+    "command": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schemaVersion",
+            "kind",
+            "jobId",
+            "tenantId",
+            "idempotencyKey",
+            "enqueuedAt",
+            "operation"
+          ],
+          "properties": {
+            "schemaVersion": true,
+            "kind": {
+              "const": "command"
+            },
+            "jobId": true,
+            "tenantId": true,
+            "idempotencyKey": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+            },
+            "enqueuedAt": {
+              "$ref": "common.v1.schema.json#/$defs/timestamp"
+            },
+            "operation": {
+              "$ref": "#/$defs/fetchSource"
+            }
+          }
+        }
+      ]
+    },
+    "bodyDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bytes", "blake3"],
+      "properties": {
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10485760
+        },
+        "blake3": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "fetchSourceOutcome": {
+      "allOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "finalUrl", "httpStatus", "redirects", "notModified"],
+          "properties": {
+            "type": {
+              "const": "fetch-source"
+            },
+            "finalUrl": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 2048,
+              "pattern": "^https?://(?:\\[[0-9A-Fa-f:.]+\\]|[\\x21\\x22\\x24-\\x2E\\x30-\\x39\\x3B-\\x3E\\x41-\\x5A\\x5E-\\x7E]+)(?::(?:80|443))?(?:[/?][\\x21\\x22\\x24-\\x7E]*)?$"
+            },
+            "httpStatus": {
+              "type": "integer",
+              "minimum": 200,
+              "maximum": 599
+            },
+            "redirects": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3
+            },
+            "notModified": {
+              "type": "boolean"
+            },
+            "etag": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "pattern": "^[\\x21-\\x7E](?:[\\x20-\\x7E]*[\\x21-\\x7E])?$"
+            },
+            "lastModified": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "pattern": "^[\\x21-\\x7E](?:[\\x20-\\x7E]*[\\x21-\\x7E])?$"
+            },
+            "contentType": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255,
+              "pattern": "^[\\x21-\\x7E](?:[\\x20-\\x7E]*[\\x21-\\x7E])?$"
+            },
+            "retryAfter": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024,
+              "pattern": "^[\\x21-\\x7E](?:[\\x20-\\x7E]*[\\x21-\\x7E])?$"
+            },
+            "body": {
+              "$ref": "#/$defs/bodyDigest"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "httpStatus": {
+              "not": {
+                "enum": [301, 302, 303, 307, 308]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "notModified": {
+                "const": true
+              }
+            },
+            "required": ["notModified"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "httpStatus": {
+                "const": 304
+              },
+              "body": false
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "httpStatus": {
+                "not": {
+                  "const": 304
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "required": ["body"],
+            "properties": {
+              "body": true
+            }
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "httpStatus": {
+                "type": "integer",
+                "minimum": 200,
+                "maximum": 299
+              }
+            }
+          }
+        }
+      ]
+    },
+    "result": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schemaVersion", "kind", "jobId", "tenantId", "completedAt", "status"],
+          "properties": {
+            "schemaVersion": true,
+            "kind": {
+              "const": "result"
+            },
+            "jobId": true,
+            "tenantId": true,
+            "completedAt": {
+              "$ref": "common.v1.schema.json#/$defs/timestamp"
+            },
+            "status": {
+              "enum": ["succeeded", "refused", "failed"]
+            },
+            "outcome": {
+              "$ref": "#/$defs/fetchSourceOutcome"
+            },
+            "reasonCode": {
+              "enum": [
+                "fetch.url_invalid",
+                "fetch.scheme_forbidden",
+                "fetch.credentials_forbidden",
+                "fetch.port_forbidden",
+                "fetch.destination_forbidden",
+                "fetch.redirect_invalid",
+                "fetch.redirect_limit",
+                "fetch.redirect_downgrade",
+                "fetch.body_too_large",
+                "fetch.encoding_unsupported",
+                "fetch.validator_invalid",
+                "job.command_invalid",
+                "fetch.dns_no_address",
+                "fetch.dns_failed",
+                "fetch.connect_failed",
+                "fetch.connect_timeout",
+                "fetch.tls_failed",
+                "fetch.total_timeout",
+                "fetch.http_protocol",
+                "fetch.decoding_failed",
+                "fetch.unavailable",
+                "job.lease_expired",
+                "job.attempts_exhausted",
+                "job.store_unavailable"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "succeeded"
+              }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "outcome": true,
+              "reasonCode": false
+            },
+            "required": ["outcome"]
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "outcome": false,
+              "reasonCode": true
+            },
+            "required": ["reasonCode"]
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "refused"
+              }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "reasonCode": {
+                "enum": [
+                  "fetch.url_invalid",
+                  "fetch.scheme_forbidden",
+                  "fetch.credentials_forbidden",
+                  "fetch.port_forbidden",
+                  "fetch.destination_forbidden",
+                  "fetch.redirect_invalid",
+                  "fetch.redirect_limit",
+                  "fetch.redirect_downgrade",
+                  "fetch.body_too_large",
+                  "fetch.encoding_unsupported",
+                  "fetch.validator_invalid",
+                  "job.command_invalid"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "failed"
+              }
+            },
+            "required": ["status"]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "reasonCode": {
+                "enum": [
+                  "fetch.dns_no_address",
+                  "fetch.dns_failed",
+                  "fetch.connect_failed",
+                  "fetch.connect_timeout",
+                  "fetch.tls_failed",
+                  "fetch.total_timeout",
+                  "fetch.http_protocol",
+                  "fetch.decoding_failed",
+                  "fetch.unavailable",
+                  "job.lease_expired",
+                  "job.attempts_exhausted",
+                  "job.store_unavailable"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,28 @@
+[package]
+name = "p02-store"
+version = "0.1.0"
+description = "P02 PostgreSQL store: migrations, tenant row-level security and the worker job queue"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[features]
+# Throwaway PostgreSQL clusters for tests (this crate's and the worker's).
+# Never enabled by a deployable.
+testing = ["dep:tokio"]
+
+[dependencies]
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tokio = { workspace = true, optional = true, features = ["rt", "time", "sync"] }
+tokio-postgres.workspace = true
+
+[dev-dependencies]
+p02-store = { path = ".", version = "=0.1.0", features = ["testing"] }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "time", "sync"] }
+
+[lints]
+workspace = true

@@ -4,7 +4,10 @@
 # migrations and deployables (PRD 12 §3.7, owner decision Y4).
 members = [
   "crates/notebook-core",
+  "crates/p02-domain",
   "crates/p02-fetch",
+  "crates/p02-store",
+  "crates/p02-worker",
 ]
 resolver = "2"
 
@@ -36,6 +39,7 @@ zeroize = { version = "=1.9.0", features = ["zeroize_derive"] }
 # TCP stream it dialled itself) so that no library resolves a host behind its
 # back; rustls uses the ring provider so the graph carries no OpenSSL-licensed
 # aws-lc code, and native roots so it carries no CDLA root bundle.
+blake3 = "=1.8.7"
 bytes = "=1.12.1"
 flate2 = { version = "=1.1.10", default-features = false, features = ["rust_backend"] }
 # Test-only certificate generation for the TLS refusal tests.
@@ -49,7 +53,8 @@ rustls = { version = "=0.23.45", default-features = false, features = ["ring", "
 rustls-native-certs = "=0.8.4"
 thiserror = "=2.0.21"
 tokio = { version = "=1.53.2", default-features = false }
-tokio-rustls = { version = "=0.26.6", default-features = false, features = ["ring", "tls12"] }
+tokio-postgres = { version = "=0.7.18", features = ["with-serde_json-1"] }
+tokio-rustls ={ version = "=0.26.6", default-features = false, features = ["ring", "tls12"] }
 url = "=2.5.8"
 
 # Audited aes fork (constant-time hardening) re-declared by this workspace:

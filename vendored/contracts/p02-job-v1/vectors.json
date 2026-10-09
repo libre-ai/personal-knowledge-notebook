@@ -1,0 +1,1255 @@
+{
+  "schemaVersion": "libre-ai.p02-job-vectors.v1",
+  "valid": [
+    {
+      "name": "fetch-source command for a feed",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "fetch-source command with both validators",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed",
+          "validators": {
+            "etag": "W/\"abc\"",
+            "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT"
+          }
+        }
+      }
+    },
+    {
+      "name": "fetch-source command for a page over http",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "http://www.example.org/post/1?ref=a@b",
+          "bodyKind": "page"
+        }
+      }
+    },
+    {
+      "name": "succeeded result with a body",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "succeeded result not modified, no body",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 304,
+          "redirects": 0,
+          "notModified": true,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8"
+        }
+      }
+    },
+    {
+      "name": "succeeded result recording a final 429 with Retry-After",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 429,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "retryAfter": "120"
+        }
+      }
+    },
+    {
+      "name": "refused result",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "refused",
+        "reasonCode": "fetch.destination_forbidden"
+      }
+    },
+    {
+      "name": "failed result",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "failed",
+        "reasonCode": "fetch.total_timeout"
+      }
+    },
+    {
+      "name": "failed result with a job-level code",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "failed",
+        "reasonCode": "job.lease_expired"
+      }
+    },
+    {
+      "name": "refused result for an invalid command",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "refused",
+        "reasonCode": "job.command_invalid"
+      }
+    },
+    {
+      "name": "fetch-source command on an explicit default port and IPv6 literal",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://[2001:4860:4860::8888]:443/feed?x=1#top",
+          "bodyKind": "feed"
+        }
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "unknown root field on a command",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        },
+        "unexpected": true
+      }
+    },
+    {
+      "name": "unknown operation field",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed",
+          "headers": {}
+        }
+      }
+    },
+    {
+      "name": "wrong schema version",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v2",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "malformed tenant id",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "tenant-1",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "missing enqueuedAt",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "timestamp that is not date-time",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "yesterday",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "idempotency key with a space",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch source",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "file URL",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "file:///etc/passwd",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "gopher URL",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "gopher://example.org/",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "URL with userinfo",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://user@example.org/feed",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "URL with whitespace",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://example.org/a b",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "URL over 2048 characters",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://example.org/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "unknown body kind",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "video"
+        }
+      }
+    },
+    {
+      "name": "unknown operation type",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "delete-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "validator carrying a header injection",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed",
+          "validators": {
+            "etag": "\"v1\"\r\nX-Injected: 1"
+          }
+        }
+      }
+    },
+    {
+      "name": "empty validators object",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed",
+          "validators": {}
+        }
+      }
+    },
+    {
+      "name": "command kind carrying a result status",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        },
+        "status": "succeeded"
+      }
+    },
+    {
+      "name": "result kind carrying an operation",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        },
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "succeeded without outcome",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded"
+      }
+    },
+    {
+      "name": "succeeded with a reason code",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        },
+        "reasonCode": "fetch.body_too_large"
+      }
+    },
+    {
+      "name": "refused without a reason code",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "refused"
+      }
+    },
+    {
+      "name": "refused carrying an outcome",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "refused",
+        "reasonCode": "fetch.destination_forbidden",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "reason code from another product",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "refused",
+        "reasonCode": "radar.destination_forbidden"
+      }
+    },
+    {
+      "name": "unknown status",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "pending",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "more redirects than the bound",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 4,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "HTTP status out of range",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 600,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "body size over the page ceiling",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 10485761,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "body size without its digest",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096
+          }
+        }
+      }
+    },
+    {
+      "name": "digest without the body size",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "uppercase digest",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "AF1349B9F5F9A1A6A0404DEA36DCC9499BCB25C9ADC112B7CC9A93CAE41F3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "unknown outcome field carrying content",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          },
+          "content": "<feed/>"
+        }
+      }
+    },
+    {
+      "name": "outcome with a final URL to a non-http scheme",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "ftp://example.org/x",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "reason code shaped like a host",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "refused",
+        "reasonCode": "fetch.attacker_example_com"
+      }
+    },
+    {
+      "name": "failure code under a refused status",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "refused",
+        "reasonCode": "fetch.total_timeout"
+      }
+    },
+    {
+      "name": "refusal code under a failed status",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "failed",
+        "reasonCode": "fetch.destination_forbidden"
+      }
+    },
+    {
+      "name": "command URL on a non-default port",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "http://feeds.example.org:8080/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "command URL on port zero",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "http://feeds.example.org:0/",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "final URL on a non-default port",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org:8443/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "final URL carrying a fragment",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml#top",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "backslash in the authority",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "http://evil.example\\@feeds.example.org/",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "not modified with a 200 status",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": true,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8"
+        }
+      }
+    },
+    {
+      "name": "not modified carrying a body",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 304,
+          "redirects": 0,
+          "notModified": true,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "304 without notModified",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 304,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8"
+        }
+      }
+    },
+    {
+      "name": "body read on a 404",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 404,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "followed redirect status as the final hop",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 301,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8"
+        }
+      }
+    },
+    {
+      "name": "informational status as the final hop",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 101,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8"
+        }
+      }
+    },
+    {
+      "name": "missing kind",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "null outcome",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": null
+      }
+    },
+    {
+      "name": "job id with an uppercase letter",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "Job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "idempotency key of 129 characters",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "kaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed"
+        }
+      }
+    },
+    {
+      "name": "validators with an unknown key",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed",
+          "validators": {
+            "etag": "\"v1\"",
+            "cookie": "x"
+          }
+        }
+      }
+    },
+    {
+      "name": "content type over 255 characters",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "text/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "body": {
+            "bytes": 4096,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "negative body size",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "result",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "completedAt": "2026-10-09T08:00:02Z",
+        "status": "succeeded",
+        "outcome": {
+          "type": "fetch-source",
+          "finalUrl": "https://feeds.example.org/atom.xml",
+          "httpStatus": 200,
+          "redirects": 0,
+          "notModified": false,
+          "etag": "\"v1\"",
+          "lastModified": "Fri, 09 Oct 2026 07:59:00 GMT",
+          "contentType": "application/atom+xml; charset=utf-8",
+          "body": {
+            "bytes": -1,
+            "blake3": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262"
+          }
+        }
+      }
+    },
+    {
+      "name": "validator of a single space",
+      "document": {
+        "schemaVersion": "libre-ai.p02-job.v1",
+        "kind": "command",
+        "jobId": "job-0001",
+        "tenantId": "ten_0123456789abcdef",
+        "idempotencyKey": "fetch:src-example:2026-10-09T08:00:00Z",
+        "enqueuedAt": "2026-10-09T08:00:00Z",
+        "operation": {
+          "type": "fetch-source",
+          "sourceId": "src-example",
+          "url": "https://feeds.example.org/atom.xml",
+          "bodyKind": "feed",
+          "validators": {
+            "etag": " "
+          }
+        }
+      }
+    }
+  ]
+}
