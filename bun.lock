@@ -26,6 +26,14 @@
         "@playwright/test": "1.62.1",
       },
     },
+    "apps/p02-api": {
+      "name": "@libre-ai/p02-api",
+      "version": "0.1.0",
+      "dependencies": {
+        "ajv": "8.20.0",
+        "ajv-formats": "3.0.1",
+      },
+    },
   },
   "overrides": {
     "@libre-ai/auth-web": "file:../ai-work-supervision/packages/auth-web",
@@ -83,6 +91,8 @@
     "@libre-ai/governance": ["@libre-ai/governance@file:../project-governance", { "dependencies": { "ajv": "8.20.0", "ajv-formats": "3.0.1", "entities": "8.0.0" }, "devDependencies": { "@biomejs/biome": "2.5.3", "@types/bun": "1.3.14", "typescript": "7.0.2" } }],
 
     "@libre-ai/notebook": ["@libre-ai/notebook@workspace:apps/notebook"],
+
+    "@libre-ai/p02-api": ["@libre-ai/p02-api@workspace:apps/p02-api"],
 
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@1.2.3", "", { "dependencies": { "@tybys/wasm-util": "^0.10.3" }, "peerDependencies": { "@emnapi/core": "^1.7.1 || ^2.0.0-alpha.4", "@emnapi/runtime": "^1.7.1 || ^2.0.0-alpha.4" } }, "sha512-UMduMbqO5s5zF2NkNacMT/yK5Y5QiKvWr2+50bzIIxFDwVJ2h49b+oyjaCGPhJxd2/gC2x39EHv/gHVuu36x2Q=="],
 
