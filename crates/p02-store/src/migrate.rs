@@ -21,11 +21,18 @@ pub struct Migration {
 }
 
 /// Every migration of this build, in order.
-pub const MIGRATIONS: &[Migration] = &[Migration {
-    version: 1,
-    name: "roles_and_queue",
-    sql: include_str!("../migrations/0001_roles_and_queue.sql"),
-}];
+pub const MIGRATIONS: &[Migration] = &[
+    Migration {
+        version: 1,
+        name: "roles_and_queue",
+        sql: include_str!("../migrations/0001_roles_and_queue.sql"),
+    },
+    Migration {
+        version: 2,
+        name: "sessions",
+        sql: include_str!("../migrations/0002_sessions.sql"),
+    },
+];
 
 /// Lock key shared by every migrating process ("p02mig" in ASCII).
 const ADVISORY_LOCK_KEY: i64 = 0x7030_326d_6967;

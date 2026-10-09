@@ -26,7 +26,7 @@ async fn migrate_verifies_an_already_migrated_database() {
     );
     assert_eq!(
         String::from_utf8_lossy(&output.stdout),
-        "p02-worker: migrations verified=1 applied=0\n"
+        "p02-worker: migrations verified=2 applied=0\n"
     );
 }
 

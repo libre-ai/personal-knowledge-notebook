@@ -62,40 +62,87 @@ pub fn postgres_bindir() -> PathBuf {
     );
 }
 
-/// A running throwaway cluster with the P02 database migrated.
+/// Clusters one test process runs at once. Each postmaster holds System V
+/// resources (macOS defaults to 32 shared memory segments); a cap keeps a
+/// parallel test run from failing on resource exhaustion instead of on its
+/// assertions. Tests beyond the cap wait for a slot.
+const MAX_CLUSTERS: usize = 4;
+static CLUSTERS: tokio::sync::Semaphore = tokio::sync::Semaphore::const_new(MAX_CLUSTERS);
+
+/// Removes the cluster directory on drop, including when start-up panics.
+struct ClusterDir(PathBuf);
+
+impl Drop for ClusterDir {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.0);
+    }
+}
+
+/// Stops the postmaster on drop, including when start-up panics.
+struct Postmaster {
+    child: Child,
+    pg_ctl: PathBuf,
+    data: PathBuf,
+}
+
+impl Drop for Postmaster {
+    fn drop(&mut self) {
+        let _ = Command::new(&self.pg_ctl)
+            .arg("stop")
+            .arg("-D")
+            .arg(&self.data)
+            .args(["-m", "immediate", "-w"])
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+        let _ = self.child.kill();
+        let _ = self.child.wait();
+    }
+}
+
+/// A running throwaway cluster with the P02 database migrated. Fields drop in
+/// order: the postmaster stops, then its directory goes, then the slot frees.
 pub struct TestDatabase {
-    root: PathBuf,
-    bindir: PathBuf,
-    postmaster: Option<Child>,
+    _postmaster: Postmaster,
+    root: ClusterDir,
+    _slot: tokio::sync::SemaphorePermit<'static>,
     pub migration: MigrationReport,
 }
 
-fn run(bindir: &Path, program: &str, args: &[&str]) {
-    let status = Command::new(bindir.join(program))
+/// Run a cluster tool; on failure, panic with the tail of its output.
+fn run(bindir: &Path, program: &str, args: &[&str], log: &Path) {
+    let output = Command::new(bindir.join(program))
         .args(args)
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .status()
+        .output()
         .unwrap_or_else(|error| panic!("{program} could not start: {error}"));
-    assert!(status.success(), "{program} failed: {status}");
+    if !output.status.success() {
+        let _ = std::fs::write(log, [&output.stdout[..], &output.stderr[..]].concat());
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        let tail: Vec<&str> = stderr.lines().rev().take(6).collect();
+        panic!("{program} failed ({}): {}", output.status, tail.join(" | "));
+    }
 }
 
 impl TestDatabase {
     /// Start a cluster, provision the roles and apply every migration.
     pub async fn start() -> Self {
+        let slot = CLUSTERS
+            .acquire()
+            .await
+            .expect("cluster slots are never closed");
         let bindir = postgres_bindir();
         let nanos = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .map(|elapsed| elapsed.subsec_nanos())
             .unwrap_or(0);
         // Short path: a Unix socket path is limited to about 100 bytes.
-        let root = PathBuf::from(format!(
+        let root = ClusterDir(PathBuf::from(format!(
             "/tmp/p02pg-{}-{}-{nanos}",
             std::process::id(),
             NEXT.fetch_add(1, Ordering::SeqCst)
-        ));
-        std::fs::create_dir_all(&root).expect("cluster directory");
-        let data = root.join("data");
+        )));
+        std::fs::create_dir_all(&root.0).expect("cluster directory");
+        let data = root.0.join("data");
         let data_arg = data.to_str().expect("utf-8 path");
         run(
             &bindir,
@@ -112,9 +159,11 @@ impl TestDatabase {
                 "--locale=C",
                 "--no-sync",
             ],
+            &root.0.join("initdb.log"),
         );
-        let postmaster = Command::new(bindir.join("postgres"))
-            .args(["-D", data_arg, "-k", root.to_str().expect("utf-8 path")])
+        let server_log = std::fs::File::create(root.0.join("postgres.log")).expect("server log");
+        let child = Command::new(bindir.join("postgres"))
+            .args(["-D", data_arg, "-k", root.0.to_str().expect("utf-8 path")])
             .args([
                 "-c",
                 "listen_addresses=",
@@ -123,14 +172,20 @@ impl TestDatabase {
                 "-c",
                 "unix_socket_permissions=0700",
             ])
+            .args(["-c", "max_connections=20", "-c", "shared_buffers=8MB"])
             .stdout(Stdio::null())
-            .stderr(Stdio::null())
+            .stderr(server_log)
             .spawn()
             .expect("postgres starts");
+        let postmaster = Postmaster {
+            child,
+            pg_ctl: bindir.join("pg_ctl"),
+            data,
+        };
         let mut database = Self {
+            _postmaster: postmaster,
             root,
-            bindir,
-            postmaster: Some(postmaster),
+            _slot: slot,
             migration: MigrationReport {
                 verified: 0,
                 applied: 0,
@@ -168,17 +223,19 @@ impl TestDatabase {
             if let Ok(client) = self.try_connect(user, dbname).await {
                 return client;
             }
-            assert!(
-                Instant::now() < deadline,
-                "postgres did not accept connections"
-            );
+            if Instant::now() >= deadline {
+                let log =
+                    std::fs::read_to_string(self.root.0.join("postgres.log")).unwrap_or_default();
+                let tail: Vec<&str> = log.lines().rev().take(6).collect();
+                panic!("postgres did not accept connections: {}", tail.join(" | "));
+            }
             tokio::time::sleep(Duration::from_millis(50)).await;
         }
     }
 
     async fn try_connect(&self, user: &str, dbname: &str) -> Result<Client, tokio_postgres::Error> {
         let mut config = Config::new();
-        config.host_path(&self.root).user(user).dbname(dbname);
+        config.host_path(&self.root.0).user(user).dbname(dbname);
         let (client, connection) = config.connect(NoTls).await?;
         tokio::spawn(async move {
             let _ = connection.await;
@@ -197,23 +254,6 @@ impl TestDatabase {
 
     /// Socket directory, for clients built outside this harness.
     pub fn socket_dir(&self) -> &Path {
-        &self.root
-    }
-}
-
-impl Drop for TestDatabase {
-    fn drop(&mut self) {
-        if let Some(data) = self.root.join("data").to_str() {
-            let _ = Command::new(self.bindir.join("pg_ctl"))
-                .args(["stop", "-D", data, "-m", "immediate", "-w"])
-                .stdout(Stdio::null())
-                .stderr(Stdio::null())
-                .status();
-        }
-        if let Some(mut child) = self.postmaster.take() {
-            let _ = child.kill();
-            let _ = child.wait();
-        }
-        let _ = std::fs::remove_dir_all(&self.root);
+        &self.root.0
     }
 }

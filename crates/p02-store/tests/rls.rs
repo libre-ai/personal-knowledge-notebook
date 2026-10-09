@@ -34,7 +34,7 @@ async fn runtime_roles_carry_no_bypass() {
         .unwrap();
     let (forced, tables): (bool, i64) = (row.get(0), row.get(1));
     assert!(forced, "every p02 table forces row-level security");
-    assert_eq!(tables, 2, "tables inspected");
+    assert_eq!(tables, 3, "tables inspected");
 }
 
 #[tokio::test]
@@ -205,4 +205,96 @@ async fn an_idempotent_reenqueue_creates_one_job_and_one_dispatch() {
         .unwrap()
         .get(0);
     assert_eq!(dispatch, 1, "one dispatch row for one job");
+}
+
+async fn session_tenant(api: &mut tokio_postgres::Client, hash: &str) -> (Option<String>, i64) {
+    let transaction = api.transaction().await.unwrap();
+    transaction
+        .batch_execute("SET LOCAL ROLE p02_api")
+        .await
+        .unwrap();
+    transaction
+        .execute(
+            "SELECT set_config('app.session_token_sha256', $1, true)",
+            &[&hash],
+        )
+        .await
+        .unwrap();
+    let tenant = transaction
+        .query_opt(
+            "SELECT tenant_id FROM p02.sessions WHERE token_sha256 = $1",
+            &[&hash],
+        )
+        .await
+        .unwrap()
+        .map(|row| row.get(0));
+    let visible: i64 = transaction
+        .query_one("SELECT count(*) FROM p02.sessions", &[])
+        .await
+        .unwrap()
+        .get(0);
+    (tenant, visible)
+}
+
+#[tokio::test]
+async fn the_api_resolves_only_the_session_it_was_handed() {
+    let database = TestDatabase::start().await;
+    let bootstrap = database.connect(p02_store::testing::BOOTSTRAP).await;
+    let (live, other, expired, revoked) = (
+        "a".repeat(64),
+        "b".repeat(64),
+        "c".repeat(64),
+        "d".repeat(64),
+    );
+    bootstrap
+        .execute(
+            "INSERT INTO p02.sessions (token_sha256, tenant_id, expires_at, revoked_at) VALUES \
+             ($1, $5, now() + interval '1 hour', NULL), \
+             ($2, $6, now() + interval '1 hour', NULL), \
+             ($3, $5, now() - interval '1 second', NULL), \
+             ($4, $5, now() + interval '1 hour', now())",
+            &[&live, &other, &expired, &revoked, &TENANT_A, &TENANT_B],
+        )
+        .await
+        .unwrap_err();
+    // Expired rows cannot even be inserted with expires_at <= created_at;
+    // insert them in the past instead.
+    bootstrap
+        .execute(
+            "INSERT INTO p02.sessions (token_sha256, tenant_id, created_at, expires_at, revoked_at) VALUES \
+             ($1, $5, now(), now() + interval '1 hour', NULL), \
+             ($2, $6, now(), now() + interval '1 hour', NULL), \
+             ($3, $5, now() - interval '2 hours', now() - interval '1 hour', NULL), \
+             ($4, $5, now(), now() + interval '1 hour', now())",
+            &[&live, &other, &expired, &revoked, &TENANT_A, &TENANT_B],
+        )
+        .await
+        .unwrap();
+    let mut api = database.connect(API_LOGIN).await;
+    assert_eq!(
+        session_tenant(&mut api, &live).await,
+        (Some(TENANT_A.to_owned()), 1)
+    );
+    assert_eq!(
+        session_tenant(&mut api, &other).await,
+        (Some(TENANT_B.to_owned()), 1)
+    );
+    assert_eq!(session_tenant(&mut api, &expired).await, (None, 0));
+    assert_eq!(session_tenant(&mut api, &revoked).await, (None, 0));
+    assert_eq!(session_tenant(&mut api, &"e".repeat(64)).await, (None, 0));
+    // The API cannot mint, alter or revoke a session.
+    let transaction = api.transaction().await.unwrap();
+    transaction
+        .batch_execute("SET LOCAL ROLE p02_api")
+        .await
+        .unwrap();
+    assert!(
+        transaction
+            .execute(
+                "INSERT INTO p02.sessions (token_sha256, tenant_id, expires_at) VALUES ($1, $2, now() + interval '1 day')",
+                &[&"f".repeat(64), &TENANT_A],
+            )
+            .await
+            .is_err()
+    );
 }

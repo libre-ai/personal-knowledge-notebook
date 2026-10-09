@@ -117,7 +117,7 @@ async fn a_released_job_comes_back_after_its_delay() {
         .unwrap();
     let mut worker = database.connect(WORKER_LOGIN).await;
     let first = claim(&mut worker, "w1", LEASE).await.unwrap().unwrap();
-    release_for_retry(&mut worker, &first, Duration::from_millis(300))
+    release_for_retry(&mut worker, &first, Duration::from_secs(2))
         .await
         .unwrap();
     assert_eq!(
@@ -125,7 +125,7 @@ async fn a_released_job_comes_back_after_its_delay() {
         None,
         "not before its delay"
     );
-    tokio::time::sleep(Duration::from_millis(400)).await;
+    tokio::time::sleep(Duration::from_millis(2100)).await;
     let second = claim(&mut worker, "w1", LEASE).await.unwrap().unwrap();
     assert_eq!(second.claims, 2);
     assert_eq!(api_state(&mut api, TENANT_A, "job-a1").await.0, "queued");

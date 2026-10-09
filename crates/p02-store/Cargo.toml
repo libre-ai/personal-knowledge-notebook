@@ -17,7 +17,7 @@ testing = ["dep:tokio"]
 serde_json.workspace = true
 sha2.workspace = true
 thiserror.workspace = true
-tokio = { workspace = true, optional = true, features = ["rt", "time"] }
+tokio = { workspace = true, optional = true, features = ["rt", "time", "sync"] }
 tokio-postgres.workspace = true
 
 [dev-dependencies]
