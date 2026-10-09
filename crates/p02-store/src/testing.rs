@@ -10,7 +10,8 @@
 //!   NOLOGIN runtime roles the migration creates.
 //!
 //! The binaries are found through `P02_PG_BINDIR`, then `pg_config --bindir`,
-//! then `/usr/lib/postgresql/<major>/bin`. If none is found the harness
+//! then `/usr/lib/postgresql/<major>/bin`, then Homebrew `postgresql*` kegs
+//! under `/opt/homebrew/opt` or `/usr/local/opt`. If none is found the harness
 //! panics: a database test never passes by skipping.
 #![allow(clippy::expect_used, clippy::panic, clippy::unwrap_used)]
 
@@ -45,20 +46,31 @@ pub fn postgres_bindir() -> PathBuf {
             return dir;
         }
     }
-    if let Ok(entries) = std::fs::read_dir("/usr/lib/postgresql") {
-        let mut majors: Vec<PathBuf> = entries
+    // Debian/Ubuntu server packages, then Homebrew kegs (macOS runners ship
+    // keg-only PostgreSQL formulas outside PATH).
+    for (parent, prefix) in [
+        ("/usr/lib/postgresql", ""),
+        ("/opt/homebrew/opt", "postgresql"),
+        ("/usr/local/opt", "postgresql"),
+    ] {
+        let Ok(entries) = std::fs::read_dir(parent) else {
+            continue;
+        };
+        let mut found: Vec<PathBuf> = entries
             .filter_map(Result::ok)
+            .filter(|entry| entry.file_name().to_string_lossy().starts_with(prefix))
             .map(|entry| entry.path().join("bin"))
             .filter(|bin| bin.join("initdb").exists())
             .collect();
-        majors.sort();
-        if let Some(bin) = majors.pop() {
+        found.sort();
+        if let Some(bin) = found.pop() {
             return bin;
         }
     }
     panic!(
         "PostgreSQL server binaries not found (P02_PG_BINDIR, pg_config --bindir, \
-         /usr/lib/postgresql/*/bin): database tests refuse to pass without a database"
+         /usr/lib/postgresql/*/bin, Homebrew postgresql kegs): database tests refuse to \
+         pass without a database"
     );
 }
 
