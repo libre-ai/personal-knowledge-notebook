@@ -12,7 +12,13 @@ export default defineConfig({
     {
       name: "firefox",
       testMatch: /backup-host\.e2e\.ts/,
-      use: { ...devices["Desktop Firefox"] },
+      use: {
+        ...devices["Desktop Firefox"],
+        // TODO(playwright-1.64): remove once @playwright/test >= 1.64.0 (microsoft/playwright#42731) — Juggler loses a message on COOP-triggered context replacement.
+        launchOptions: {
+          firefoxUserPrefs: { "browser.tabs.remote.useCrossOriginOpenerPolicy": false },
+        },
+      },
     },
     {
       // Linux's bundled WebKit lacks StorageManager.estimate; verify its closed refusal.
