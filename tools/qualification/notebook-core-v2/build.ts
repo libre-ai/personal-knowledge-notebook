@@ -7,6 +7,14 @@ import { fileURLToPath } from "node:url";
 import { transpileBytes } from "@bytecodealliance/jco-transpile";
 import { componentNew, componentWit } from "@bytecodealliance/jco-transpile/wasm-tools";
 
+import {
+  assertNoMachinePaths,
+  machinePathContext,
+  machinePathRemaps,
+  REMAP_TARGETS,
+  remapConfigArgument,
+} from "../../../scripts/machine-paths.ts";
+
 const qualificationDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = resolve(qualificationDirectory, "../../..");
 const outputDirectory = resolve(repositoryRoot, "target/notebook-core-v2-qualification");
@@ -111,6 +119,15 @@ function sha256(value: Uint8Array): string {
   return createHash("sha256").update(value).digest("hex");
 }
 
+// Owner decision Y40: dependency panic locations carry absolute CARGO_HOME paths,
+// so the module shipped the builder's user name and its fingerprint followed the
+// machine. The recipe remaps them itself (external Rust flags stay refused above);
+// `--config` arrays are appended to the `+simd128` rustflags of .cargo/config.toml.
+const pathContext = machinePathContext(repositoryRoot);
+const wasmRemap = remapConfigArgument(
+  "target.wasm32-unknown-unknown.rustflags",
+  machinePathRemaps(pathContext),
+);
 run("cargo", [
   "build",
   "--locked",
@@ -119,6 +136,8 @@ run("cargo", [
   "--release",
   "--target",
   "wasm32-unknown-unknown",
+  "--config",
+  wasmRemap,
 ]);
 run(
   "cargo",
@@ -130,6 +149,8 @@ run(
     "--release",
     "--target",
     "wasm32-unknown-unknown",
+    "--config",
+    wasmRemap,
     "--features",
     "qualification-faults",
   ],
@@ -284,6 +305,19 @@ const qualificationFiles = [
   ...trapModules.map(({ name }) => name),
   ...browserBundles.map(([, output]) => output),
 ];
+// The proof is the bytes, not the exit code of cargo: every module, component and
+// generated file of this build must be free of machine paths.
+const machinePathScan = await assertNoMachinePaths(
+  pathContext,
+  [
+    coreModule,
+    componentPath,
+    internalFaultCoreModule,
+    internalFaultComponentPath,
+    ...[...qualificationFiles].sort().map(safeOutputPath),
+  ],
+  (path) => relative(repositoryRoot, path),
+);
 const generated = Object.fromEntries(
   await Promise.all(
     qualificationFiles.sort().map(async (name) => {
@@ -318,6 +352,7 @@ const inputPaths = [
   "tools/qualification/notebook-core-v2",
   "toolchains/notebook-qualification.json",
   "apps/notebook/scripts/build.ts",
+  "scripts/machine-paths.ts",
 ];
 const inputFiles = (await Promise.all(inputPaths.map(sourceDigests))).flat();
 const rustVersion = spawnSync("rustc", ["--version"], { cwd: repositoryRoot, encoding: "utf8" });
@@ -342,6 +377,13 @@ const manifest = {
   },
   generated,
   schemaVersion: "libre-ai.notebook-core-v2-qualification-manifest.v1",
+  // Remap targets only: the remapped prefixes are machine paths, never recorded.
+  pathRemap: {
+    targets: Object.values(REMAP_TARGETS),
+    scannedArtifacts: machinePathScan.artifacts,
+    scannedBytes: machinePathScan.bytes,
+    needleHits: 0,
+  },
   transpiler: "@bytecodealliance/jco-transpile@0.4.2",
   wasmBuildConfiguration: {
     path: ".cargo/config.toml",
