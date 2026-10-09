@@ -6,7 +6,7 @@ resolver = "2"
 edition = "2024"
 rust-version = "1.97"
 license = "EUPL-1.2"
-repository = "https://github.com/libre-ai/notebook"
+repository = "https://github.com/libre-ai/personal-knowledge-workspace"
 
 [workspace.dependencies]
 aes = { version = "=0.8.4", default-features = false, features = ["zeroize"] }
