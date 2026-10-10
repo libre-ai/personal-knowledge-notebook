@@ -8,7 +8,10 @@ let originals: Array<PropertyDescriptor | undefined> = [];
 beforeEach(() => {
   originals = keys.map((key) => Object.getOwnPropertyDescriptor(globalThis, key));
   Object.defineProperties(globalThis, {
-    navigator: { configurable: true, value: { storage: { estimate: async () => ({ quota: 536_870_912, usage: 0 }) } } },
+    navigator: {
+      configurable: true,
+      value: { storage: { estimate: async () => ({ quota: 536_870_912, usage: 0 }) } },
+    },
     isSecureContext: { configurable: true, value: true },
     Worker: { configurable: true, value: class SyntheticWorker {} },
     indexedDB: { configurable: true, value: {} },
@@ -41,7 +44,10 @@ describe("Notebook browser capability preflight", () => {
     await expect(verifyNotebookBackupRuntime()).resolves.toBeUndefined();
   });
   test("refuses one byte below the unchanged quota floor", async () => {
-    Object.defineProperty(navigator, "storage", { value: { estimate: async () => ({ quota: 536_870_912, usage: 1 }) }, configurable: true });
+    Object.defineProperty(navigator, "storage", {
+      value: { estimate: async () => ({ quota: 536_870_912, usage: 1 }) },
+      configurable: true,
+    });
     await expectUnavailable();
   });
 });

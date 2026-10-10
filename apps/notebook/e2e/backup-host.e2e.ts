@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { expect, test } from "@playwright/test";
+import { assertStrictContentSecurityPolicy } from "./content-security-policy";
 import { inspectRuntimeCapabilities } from "./runtime-diagnostics";
 import { assertUnavailableRuntime } from "./runtime-refusal";
 
@@ -18,14 +19,18 @@ test("seals, downloads, stages and restores through the exact product host", asy
   expect(buildManifest.backupFeature).toBe("gate-b");
   const hash = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
   const root = new URL("../../../", import.meta.url);
-  const qualificationBytes = await readFile(new URL("target/notebook-core-v2-qualification/manifest.json", root));
+  const qualificationBytes = await readFile(
+    new URL("target/notebook-core-v2-qualification/manifest.json", root),
+  );
   expect(hash(qualificationBytes)).toBe(buildManifest.coreProvenance.qualificationManifestSha256);
   const qualification = JSON.parse(qualificationBytes.toString("utf8")) as {
     generated: Record<string, { sha256: string }>;
     buildProvenance: {
       inputFiles: Array<{ path: string; sha256: string }>;
       node: { version: string; executableSha256: string };
-      rust: string; closedWitSha256: string; coreImports: number;
+      rust: string;
+      closedWitSha256: string;
+      coreImports: number;
     };
   };
   const provenance = qualification.buildProvenance;
@@ -38,19 +43,29 @@ test("seals, downloads, stages and restores through the exact product host", asy
     expect(input.path).not.toMatch(/(^\/|\.\.)/);
     expect(hash(await readFile(new URL(input.path, root)))).toBe(input.sha256);
   }
-  const toolchain = JSON.parse(await readFile(new URL("toolchains/notebook-qualification.json", root), "utf8"));
+  const toolchain = JSON.parse(
+    await readFile(new URL("toolchains/notebook-qualification.json", root), "utf8"),
+  );
   expect(provenance.node.version).toBe(toolchain.node.version);
-  expect(Object.values(toolchain.node.platforms).some((asset) =>
-    (asset as { executableSha256: string }).executableSha256 === provenance.node.executableSha256,
-  )).toBe(true);
+  expect(
+    Object.values(toolchain.node.platforms).some(
+      (asset) =>
+        (asset as { executableSha256: string }).executableSha256 ===
+        provenance.node.executableSha256,
+    ),
+  ).toBe(true);
   const rustToolchain = await readFile(new URL("rust-toolchain.toml", root), "utf8");
   expect(rustToolchain).toContain(`channel = "${provenance.rust.split(" ")[1]}"`);
-  const witBytes = await readFile(new URL("target/notebook-core-v2-qualification/component.wit", root));
+  const witBytes = await readFile(
+    new URL("target/notebook-core-v2-qualification/component.wit", root),
+  );
   expect(hash(witBytes)).toBe(provenance.closedWitSha256);
   expect(witBytes.toString("utf8")).toContain("export libre-ai:notebook-core/api@2.0.0;");
   expect(witBytes.toString("utf8")).not.toContain("import ");
   expect(provenance.coreImports).toBe(0);
-  expect(qualification.generated["notebook-core.core.wasm"]?.sha256).toBe(buildManifest.coreProvenance.generatedCore.sha256);
+  expect(qualification.generated["notebook-core.core.wasm"]?.sha256).toBe(
+    buildManifest.coreProvenance.generatedCore.sha256,
+  );
   const servedCore = await page.request.get("/assets/notebook-core.core.wasm");
   expect(servedCore.ok()).toBe(true);
   const servedBytes = await servedCore.body();
@@ -78,9 +93,7 @@ test("seals, downloads, stages and restores through the exact product host", asy
   page.on("pageerror", (error) => pageErrors.push(error.message));
 
   const pageResponse = await page.goto("/");
-  const contentSecurityPolicy = pageResponse?.headers()["content-security-policy"] ?? "";
-  expect(contentSecurityPolicy).toContain("script-src 'self' 'wasm-unsafe-eval'");
-  expect(contentSecurityPolicy).not.toContain("'unsafe-eval'");
+  assertStrictContentSecurityPolicy(pageResponse?.headers()["content-security-policy"]);
   await expect(page.getByRole("heading", { name: "Fixture publique Gate B" })).toBeVisible();
 
   await assertRuntimeReady(page);
@@ -156,40 +169,44 @@ test("removes encrypted restore staging left by an interrupted process", async (
   console.info("restore-recovery: initial-readiness");
   await test.step("initial readiness", () => assertRuntimeReady(page));
   console.info("restore-recovery: stage-indexeddb");
-  await test.step("stage IndexedDB record", () => page.evaluate(async () => {
-    await new Promise<void>((resolve, reject) => {
-      const open = indexedDB.open("libre-ai-notebook", 1);
-      open.onerror = () => reject(new Error("database unavailable"));
-      open.onsuccess = () => {
-        const database = open.result;
-        const transaction = database.transaction("backup-runtime", "readwrite");
-        transaction.objectStore("backup-runtime").put({
-          envelope: new Uint8Array([1, 2, 3]),
-          key: `pending:op_${"a".repeat(32)}`,
-          kind: "pending-restore",
-          operationId: `op_${"a".repeat(32)}`,
-        });
-        transaction.oncomplete = () => {
-          database.close();
-          resolve();
+  await test.step("stage IndexedDB record", () =>
+    page.evaluate(async () => {
+      await new Promise<void>((resolve, reject) => {
+        const open = indexedDB.open("libre-ai-notebook", 1);
+        open.onerror = () => reject(new Error("database unavailable"));
+        open.onsuccess = () => {
+          const database = open.result;
+          const transaction = database.transaction("backup-runtime", "readwrite");
+          transaction.objectStore("backup-runtime").put({
+            envelope: new Uint8Array([1, 2, 3]),
+            key: `pending:op_${"a".repeat(32)}`,
+            kind: "pending-restore",
+            operationId: `op_${"a".repeat(32)}`,
+          });
+          transaction.oncomplete = () => {
+            database.close();
+            resolve();
+          };
+          transaction.onabort = () => reject(new Error("staging unavailable"));
         };
-        transaction.onabort = () => reject(new Error("staging unavailable"));
-      };
-    });
-  }));
+      });
+    }));
 
   console.info("restore-recovery: close-original-page");
   await test.step("close original page", () => page.close());
   console.info("restore-recovery: create-recovery-page");
   const recoveredPage = await test.step("create recovery page", () => context.newPage());
   console.info("restore-recovery: recovery-navigation");
-  await test.step("recovery navigation", () => recoveredPage.goto("/", { waitUntil: "domcontentloaded" }));
+  await test.step("recovery navigation", () =>
+    recoveredPage.goto("/", { waitUntil: "domcontentloaded" }));
   console.info("restore-recovery: await-cleanup-status");
-  await test.step("await cleanup status", () => expect(recoveredPage.getByTestId("backup-status")).toHaveText(
-    "Une restauration interrompue a été nettoyée sans libérer de plaintext.",
-  ));
+  await test.step("await cleanup status", () =>
+    expect(recoveredPage.getByTestId("backup-status")).toHaveText(
+      "Une restauration interrompue a été nettoyée sans libérer de plaintext.",
+    ));
   console.info("restore-recovery: inspect-indexeddb");
-  const records = await test.step("inspect IndexedDB records", () => inspectBackupStore(recoveredPage));
+  const records = await test.step("inspect IndexedDB records", () =>
+    inspectBackupStore(recoveredPage));
   expect(records.keys.some((key) => key.startsWith("pending:"))).toBe(false);
   console.info("restore-recovery: completed");
 });
@@ -236,7 +253,11 @@ test("reports capability stages without retaining exception details", async ({ p
   await page.evaluate(() => {
     Object.defineProperty(navigator, "storage", {
       configurable: true,
-      value: { estimate: async () => { throw new TypeError("private-diagnostic-sentinel"); } },
+      value: {
+        estimate: async () => {
+          throw new TypeError("private-diagnostic-sentinel");
+        },
+      },
     });
   });
   const capabilities = await inspectRuntimeCapabilities(page);
@@ -249,4 +270,23 @@ test("refuses a missing quota API without creating a backup worker", async ({ pa
     Object.defineProperty(navigator, "storage", { configurable: true, value: {} });
   });
   await assertUnavailableRuntime(page);
+});
+
+test("serves the strict content security policy on every product surface", async ({ page }) => {
+  // HTML documents, scripts, the worker and the WASM core: a policy relaxed on
+  // any one of them is enough to run injected script in the product origin.
+  const surfaces = [
+    "/",
+    "/static",
+    "/api/health",
+    "/assets/app.js",
+    "/assets/notebook-core-worker.js",
+    "/assets/notebook-core.js",
+    "/assets/notebook-core.core.wasm",
+  ];
+  for (const surface of surfaces) {
+    const response = await page.request.get(surface);
+    expect(response.status(), surface).toBe(200);
+    assertStrictContentSecurityPolicy(response.headers()["content-security-policy"]);
+  }
 });

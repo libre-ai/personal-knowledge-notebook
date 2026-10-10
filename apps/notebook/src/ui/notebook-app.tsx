@@ -1,5 +1,5 @@
 import { SkipLink, StatusMessage, Surface } from "@libre-ai/ui";
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { NotebookBackupController } from "../backup/controller";
 import { NOTEBOOK_BACKUP_FEATURE_ENABLED } from "../backup/feature";
 import { IndexedDbNotebookBackupPersistence } from "../backup/indexed-db";
@@ -33,7 +33,9 @@ export function NotebookApp() {
     tone: "neutral",
   });
 
-  const getController = (): NotebookBackupController => {
+  // Stable identity: the mount effect depends on it and must still run once,
+  // so the lazily created controller is never rebuilt by a re-render.
+  const getController = useCallback((): NotebookBackupController => {
     if (!controller.current) {
       controller.current = new NotebookBackupController({
         host: new NotebookBackupHost(),
@@ -43,7 +45,7 @@ export function NotebookApp() {
       });
     }
     return controller.current;
-  };
+  }, []);
 
   useEffect(() => {
     setHydrated(true);
@@ -72,7 +74,7 @@ export function NotebookApp() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [getController]);
 
   const createBackup = async (): Promise<void> => {
     if (busy || !hydrated || !runtimeReady || !NOTEBOOK_BACKUP_FEATURE_ENABLED) return;

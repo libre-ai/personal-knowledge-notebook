@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!vendored", "!third_party", "!apps/notebook/src", "!apps/notebook/e2e"]
+    "includes": ["**", "!vendored", "!third_party"]
   },
   "formatter": {
     "enabled": true,
@@ -17,7 +17,14 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "preset": "recommended"
+      "preset": "recommended",
+      "security": {
+        "noBlankTarget": "error",
+        "noDangerouslySetInnerHtml": "error",
+        "noDangerouslySetInnerHtmlWithChildren": "error",
+        "noGlobalEval": "error",
+        "noScriptUrl": "error"
+      }
     }
   },
   "assist": {
