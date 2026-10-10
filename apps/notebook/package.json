@@ -17,6 +17,8 @@
     "start": "bun src/server/index.ts",
     "pretest": "bun run check:bun",
     "test": "bun test",
+    "pretypecheck": "bun run check:bun",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "pretest:e2e": "bun run check:bun",
     "test:e2e": "bun run build:gate-b && playwright test"
   },
@@ -27,6 +29,8 @@
     "react-dom": "19.2.7"
   },
   "devDependencies": {
-    "@playwright/test": "1.62.1"
+    "@playwright/test": "1.62.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3"
   }
 }

@@ -70,7 +70,11 @@ test("seals, downloads, stages and restores through the exact product host", asy
   expect(servedCore.ok()).toBe(true);
   const servedBytes = await servedCore.body();
   expect(hash(servedBytes)).toBe(buildManifest.coreProvenance.generatedCore.sha256);
-  expect(WebAssembly.Module.imports(new WebAssembly.Module(servedBytes))).toEqual([]);
+  // A Node Buffer may sit on a shared pool; copying into a fresh Uint8Array gives
+  // WebAssembly.Module the plain ArrayBuffer-backed view its signature requires.
+  expect(WebAssembly.Module.imports(new WebAssembly.Module(new Uint8Array(servedBytes)))).toEqual(
+    [],
+  );
   expect(buildManifest.shippingFiles["assets/notebook-core.core.wasm"]?.sha256).toBe(
     buildManifest.coreProvenance.generatedCore.sha256,
   );

@@ -25,6 +25,8 @@
       },
       "devDependencies": {
         "@playwright/test": "1.62.1",
+        "@types/react": "19.2.17",
+        "@types/react-dom": "19.2.3",
       },
     },
     "apps/p02-api": {
