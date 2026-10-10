@@ -10,8 +10,8 @@ permissions:
   contents: read
 jobs:
   composition:
-    uses: libre-ai/project-governance/.github/workflows/validate-composition.yml@1c8b37c80beb41f640982768ec27304a911e0b8e
+    uses: libre-ai/project-governance/.github/workflows/validate-composition.yml@5ef12472d043f3ed1799ca09cff89c27ff024d79
     with:
       target: personal-knowledge-workspace
       target_ref: ${{ github.sha }}
-      tooling_ref: 1c8b37c80beb41f640982768ec27304a911e0b8e
+      tooling_ref: 5ef12472d043f3ed1799ca09cff89c27ff024d79
